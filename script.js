@@ -28,6 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
             glitchElement.style.animationDuration = '5s';
         }, 1000);
     });
+
+    // Fetch GitHub repositories
+    fetchGitHubRepos();
 });
 
 // Function to create background particles
@@ -131,3 +134,79 @@ cursorStyle.innerHTML = `
     }
 `;
 document.head.appendChild(cursorStyle);
+
+// Function to fetch GitHub pinned repositories
+async function fetchGitHubRepos() {
+    try {
+        // GitHub username
+        const username = 'karutoil';
+        
+        // Fetch user repositories
+        const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch repositories');
+        }
+        
+        const repos = await response.json();
+        
+        // GitHub doesn't have a direct API for pinned repos, so we'll display the most starred ones
+        // and let GitHub API determine which are most relevant
+        const topRepos = repos
+            .sort((a, b) => b.stargazers_count - a.stargazers_count)
+            .slice(0, 4);
+        
+        // Clear the placeholder repos
+        const reposGrid = document.querySelector('.repos-grid');
+        reposGrid.innerHTML = '';
+        
+        // Add the actual repos
+        topRepos.forEach((repo, index) => {
+            // Create repo card with animation delay based on index
+            const repoCard = document.createElement('div');
+            repoCard.className = 'repo-card';
+            repoCard.style.setProperty('--i', index + 1);
+            
+            // Sanitize the description to handle null values
+            const description = repo.description 
+                ? repo.description 
+                : 'No description available';
+            
+            repoCard.innerHTML = `
+                <div class="repo-header">
+                    <i class="fa-brands fa-github"></i>
+                    <h3>${repo.name}</h3>
+                </div>
+                <p class="repo-description">${description}</p>
+                <div class="repo-footer">
+                    <span><i class="fa-solid fa-code-branch"></i> ${repo.forks_count}</span>
+                    <span><i class="fa-solid fa-star"></i> ${repo.stargazers_count}</span>
+                    <a href="${repo.html_url}" target="_blank" class="repo-link">View Project <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            `;
+            
+            reposGrid.appendChild(repoCard);
+        });
+        
+    } catch (error) {
+        console.error('Error fetching GitHub repositories:', error);
+        
+        // Show error message in the repo section
+        const reposContent = document.querySelector('.repos-content');
+        const errorMsg = document.createElement('p');
+        errorMsg.className = 'repos-error';
+        errorMsg.textContent = 'Failed to load GitHub repositories. Please check back later.';
+        
+        // Add error styling
+        errorMsg.style.color = '#ff4545';
+        errorMsg.style.textAlign = 'center';
+        errorMsg.style.margin = '2rem 0';
+        
+        // Clear the placeholder repos
+        const reposGrid = document.querySelector('.repos-grid');
+        reposGrid.innerHTML = '';
+        
+        // Add the error message
+        reposContent.appendChild(errorMsg);
+    }
+}

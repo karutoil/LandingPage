@@ -166,6 +166,222 @@ main {
   line-height: 1.7;
 }
 
+/* GitHub Repositories Section */
+.github-repos {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem 2rem;
+  background-color: rgba(15, 15, 15, 0.3);
+}
+
+.repos-content {
+  max-width: 1200px;
+  width: 100%;
+  padding: 3rem;
+}
+
+.repos-content h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3rem;
+  margin-bottom: 3rem;
+  text-align: center;
+  position: relative;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 1s 0.2s forwards;
+}
+
+.repos-content h2::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background-color: var(--accent-color);
+}
+
+.repos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+/* Loading Spinner for Repos */
+.repo-loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  grid-column: 1 / -1; /* Span all columns */
+  padding: 3rem;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--accent-color);
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.repo-loading p {
+  color: var(--text-color);
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.repos-error {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Repository Cards */
+.repo-card {
+  background-color: rgba(20, 20, 20, 0.7);
+  border-radius: 10px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s forwards;
+  animation-delay: calc(0.2s * var(--i, 1));
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.repo-card:nth-child(1) {
+  --i: 1;
+}
+
+.repo-card:nth-child(2) {
+  --i: 2;
+}
+
+.repo-card:nth-child(3) {
+  --i: 3;
+}
+
+.repo-card:nth-child(4) {
+  --i: 4;
+}
+
+.repo-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0, 238, 255, 0.2);
+  border: 1px solid rgba(0, 238, 255, 0.3);
+}
+
+.repo-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.repo-header i {
+  font-size: 1.5rem;
+  color: var(--accent-color);
+  margin-right: 1rem;
+}
+
+.repo-header h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.repo-description {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.repo-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1rem;
+}
+
+.repo-footer span {
+  display: flex;
+  align-items: center;
+}
+
+.repo-footer i {
+  margin-right: 0.5rem;
+  color: var(--accent-color);
+}
+
+.repo-link {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.repo-link i {
+  margin-left: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.repo-link:hover i {
+  transform: translateX(5px);
+}
+
+.github-profile-link {
+  text-align: center;
+  margin-top: 3rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s 1s forwards;
+}
+
+.github-profile-link a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.8rem 1.5rem;
+  border: 2px solid var(--accent-color);
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.github-profile-link a i {
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+.github-profile-link a:hover {
+  background-color: var(--accent-color);
+  color: var(--primary-color);
+  box-shadow: 0 0 20px rgba(0, 238, 255, 0.5);
+}
+
 /* Footer */
 footer {
   text-align: center;
@@ -281,6 +497,14 @@ footer {
   .about-content p {
     font-size: 1rem;
   }
+  
+  .repos-content h2 {
+    font-size: 2.5rem;
+  }
+  
+  .repos-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 480px) {
@@ -294,5 +518,18 @@ footer {
   
   .about-content h2 {
     font-size: 2rem;
+  }
+  
+  .repos-content h2 {
+    font-size: 2rem;
+  }
+  
+  .repo-header h3 {
+    font-size: 1.3rem;
+  }
+  
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
   }
 }
