@@ -1,10 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import '../styles/Hero.css';
 
 const Hero: React.FC = () => {
   const glitchRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
+  const scrollIndicatorRef = useRef<HTMLDivElement>(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   useEffect(() => {
     // Add hover effect to the glitch title
@@ -22,13 +24,36 @@ const Hero: React.FC = () => {
     // Create particle effect
     createParticles();
     
+    // Add scroll event listener to hide scroll indicator when scrolling
+    const handleScroll = () => {
+      const position = window.scrollY;
+      setScrollPosition(position);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
     return () => {
       // Cleanup event listeners if needed
       if (glitchElement) {
         glitchElement.removeEventListener('mouseover', () => {});
       }
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  // Effect to animate scroll indicator opacity based on scroll position
+  useEffect(() => {
+    if (scrollIndicatorRef.current) {
+      const maxScroll = 300; // Scroll distance at which indicator fully disappears
+      const opacity = Math.max(0, 1 - (scrollPosition / maxScroll));
+      
+      gsap.to(scrollIndicatorRef.current, {
+        opacity: opacity,
+        duration: 0.3,
+        ease: 'power2.out'
+      });
+    }
+  }, [scrollPosition]);
 
   // Function to create background particles
   const createParticles = () => {
@@ -67,7 +92,7 @@ const Hero: React.FC = () => {
       <div className="tagline">
         <p>Server Architect. Cloud Virtualization Expert. Game Infrastructure Specialist.</p>
       </div>
-      <div className="scroll-indicator">
+      <div className="scroll-indicator" ref={scrollIndicatorRef}>
         <span>Scroll</span>
         <div className="arrow"></div>
       </div>
