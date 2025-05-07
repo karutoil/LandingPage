@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
 import '../styles/Hero.css';
 import avatar from '../assets/avatar.webp';
 
