@@ -1,0 +1,67 @@
+.contact-section {
+  padding: 4rem 2rem;
+  background-color: #f8f9fa;
+}
+
+.contact-section h2 {
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 2.5rem;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #fff;
+  background-color: #333;
+  transition: transform 0.3s, background-color 0.3s;
+}
+
+.social-link:hover {
+  transform: translateY(-5px);
+  background-color: #555;
+}
+
+.social-link i {
+  font-size: 1.5rem;
+  margin-right: 0.75rem;
+}
+
+/* GitHub specific styling */
+.social-link:nth-child(1) {
+  background-color: #24292e;
+}
+
+.social-link:nth-child(1):hover {
+  background-color: #3a3f46;
+}
+
+/* Discord specific styling */
+.social-link:nth-child(2) {
+  background-color: #5865F2;
+}
+
+.social-link:nth-child(2):hover {
+  background-color: #7289da;
+}
+
+@media (max-width: 768px) {
+  .social-links {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .social-link {
+    width: 80%;
+  }
+}

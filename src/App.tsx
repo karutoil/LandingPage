@@ -6,6 +6,7 @@ import Hero from './components/Hero';
 import About from './components/About';
 import WorkExperience from './components/WorkExperience';
 import GitHubRepos from './components/GitHubRepos';
+import Contact from './components/Contact';
 import Footer from './components/Footer';
 
 // Register GSAP plugins
@@ -23,6 +24,7 @@ function App() {
         <About />
         <WorkExperience />
         <GitHubRepos />
+        <Contact />
       </main>
       <Footer />
     </div>
