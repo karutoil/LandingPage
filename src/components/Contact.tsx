@@ -11,7 +11,7 @@ const Contact: React.FC = () => {
             <i className="fab fa-github"></i>
             <span>GitHub: karutoil</span>
           </a>
-          <a href="https://discord.com/users/karutoil" target="_blank" rel="noopener noreferrer" className="social-link">
+          <a href="https://discord.com/users/96676726397997056" target="_blank" rel="noopener noreferrer" className="social-link">
             <i className="fab fa-discord"></i>
             <span>Discord: karutoil</span>
           </a>
