@@ -1,12 +1,41 @@
+/* Contact Section */
 .contact-section {
-  padding: 4rem 2rem;
-  background-color: #f8f9fa;
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem 2rem;
+  background-color: rgba(15, 15, 15, 0.3);
+}
+
+.container {
+  max-width: 800px;
+  background-color: rgba(15, 15, 15, 0.7);
+  padding: 3rem;
+  border-radius: 10px;
+  border-left: 5px solid var(--accent-color);
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 1s 0.2s forwards;
 }
 
 .contact-section h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3rem;
   margin-bottom: 2rem;
   text-align: center;
-  font-size: 2.5rem;
+  position: relative;
+}
+
+.contact-section h2::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background-color: var(--accent-color);
 }
 
 .social-links {
@@ -14,54 +43,91 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 2rem;
+  margin-top: 3rem;
 }
 
 .social-link {
   display: flex;
   align-items: center;
-  padding: 1rem 1.5rem;
-  border-radius: 8px;
+  padding: 1.2rem 2rem;
+  border-radius: 10px;
   text-decoration: none;
   color: #fff;
-  background-color: #333;
-  transition: transform 0.3s, background-color 0.3s;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s forwards;
+  animation-delay: calc(0.2s * var(--i, 1));
 }
 
 .social-link:hover {
-  transform: translateY(-5px);
-  background-color: #555;
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0, 238, 255, 0.2);
+  border: 1px solid rgba(0, 238, 255, 0.3);
 }
 
 .social-link i {
-  font-size: 1.5rem;
-  margin-right: 0.75rem;
+  font-size: 1.8rem;
+  margin-right: 1rem;
+  color: var(--accent-color);
+}
+
+.social-link span {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.1rem;
 }
 
 /* GitHub specific styling */
 .social-link:nth-child(1) {
-  background-color: #24292e;
-}
-
-.social-link:nth-child(1):hover {
-  background-color: #3a3f46;
+  background-color: rgba(36, 41, 46, 0.8);
+  --i: 1;
 }
 
 /* Discord specific styling */
 .social-link:nth-child(2) {
-  background-color: #5865F2;
+  background-color: rgba(88, 101, 242, 0.8);
+  --i: 2;
 }
 
-.social-link:nth-child(2):hover {
-  background-color: #7289da;
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
+/* Media Queries */
 @media (max-width: 768px) {
+  .contact-section h2 {
+    font-size: 2.5rem;
+  }
+  
   .social-links {
     flex-direction: column;
     align-items: center;
   }
   
   .social-link {
-    width: 80%;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 2rem;
+  }
+  
+  .contact-section h2 {
+    font-size: 2rem;
+  }
+  
+  .social-link {
+    padding: 1rem 1.5rem;
+  }
+  
+  .social-link i {
+    font-size: 1.5rem;
   }
 }
