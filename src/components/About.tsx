@@ -28,7 +28,7 @@ const About: React.FC = () => {
     <div className="about">
       <div className="about-content" ref={aboutContentRef}>
         <h2>About</h2>
-        <p>Creating digital experiences that blend technology with artistry. I push the boundaries of what's possible in the digital realm, turning complex ideas into elegant solutions.</p>
+        <p>Specialized in high-performance infrastructure solutions and virtualization technologies. I design and optimize server environments for game hosting providers and cloud platforms, transforming technical challenges into efficient, scalable architectures that deliver exceptional performance and reliability.</p>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './App.css';
 import Hero from './components/Hero';
 import About from './components/About';
+import WorkExperience from './components/WorkExperience';
 import GitHubRepos from './components/GitHubRepos';
 import Footer from './components/Footer';
 
@@ -20,6 +21,7 @@ function App() {
       <main>
         <Hero />
         <About />
+        <WorkExperience />
         <GitHubRepos />
       </main>
       <Footer />

@@ -65,7 +65,7 @@ const Hero: React.FC = () => {
         <div className="glitch" data-text="KARUTOIL" ref={glitchRef}>KARUTOIL</div>
       </div>
       <div className="tagline">
-        <p>Digital craftsman. Code artist. Experience architect.</p>
+        <p>Server Architect. Cloud Virtualization Expert. Game Infrastructure Specialist.</p>
       </div>
       <div className="scroll-indicator">
         <span>Scroll</span>

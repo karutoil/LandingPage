@@ -1,46 +1,68 @@
-# Getting Started with Create React App
+# Karutoil's Personal Website
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, animated personal portfolio site showcasing my professional experience in server architecture, game infrastructure, and cloud solutions.
 
-## Available Scripts
+## Overview
 
-In the project directory, you can run:
+This portfolio site features:
+- Interactive glitch animation effects
+- Dynamic GitHub repository integration
+- Responsive design for all devices
+- Particle animations and smooth scrolling effects
+- Comprehensive overview of my professional expertise
 
-### `npm start`
+## Technologies Used
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **React**: Frontend library for building the user interface
+- **TypeScript**: Type-safe JavaScript for improved development
+- **GSAP (GreenSock Animation Platform)**: Advanced animations
+- **GitHub API**: Dynamic repository integration
+- **CSS3**: Custom styling with modern animations
+- **Font Awesome**: Icon integration
+- **GitHub Actions**: Automated deployment
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Professional Expertise
 
-### `npm test`
+### Server Architecture
+Specialized in server management solutions including WHMCS, ProxMox, VirtFusion, and Tenantos, with experience in PXE image creation and baremetal deployment.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Game Server Management
+Expert in configuring and optimizing game servers for Minecraft, FiveM, Factorio, Space Engineers, and more, focusing on performance, security, and reliability.
 
-### `npm run build`
+### Consulting Services
+Strategic advisor for game hosting companies and cloud providers, specializing in infrastructure optimization, automation solutions, and security hardening.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Development
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+This project uses:
+- React 19 with TypeScript
+- GitHub Pages for hosting
+- GitHub Actions for CI/CD
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Local Development
 
-### `npm run eject`
+```bash
+# Install dependencies
+npm install
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+# Start development server
+npm start
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# Build for production
+npm run build
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+# Deploy to GitHub Pages
+npm run deploy
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Deployment
 
-## Learn More
+The site is automatically deployed to GitHub Pages via GitHub Actions when changes are pushed to the main branch.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Contact
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Feel free to reach out through my GitHub profile or any of the linked platforms on the website.
+
+---
+
+© 2025 Karutoil. All rights reserved.
