@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import '../styles/Hero.css';
+import avatar from '../assets/avatar.webp';
 
 const Hero: React.FC = () => {
   const glitchRef = useRef<HTMLDivElement>(null);
@@ -26,10 +27,12 @@ const Hero: React.FC = () => {
     
     // Add scroll event listener to hide scroll indicator when scrolling
     const handleScroll = () => {
-      const position = window.scrollY;
-      setScrollPosition(position);
+      setScrollPosition(window.pageYOffset);
     };
 
+    // Initialize scroll position
+    setScrollPosition(window.pageYOffset);
+    
     window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => {
@@ -44,14 +47,11 @@ const Hero: React.FC = () => {
   // Effect to animate scroll indicator opacity based on scroll position
   useEffect(() => {
     if (scrollIndicatorRef.current) {
-      const maxScroll = 300; // Scroll distance at which indicator fully disappears
+      const maxScroll = 200; // Adjust: smaller value means faster fade-out
       const opacity = Math.max(0, 1 - (scrollPosition / maxScroll));
       
-      gsap.to(scrollIndicatorRef.current, {
-        opacity: opacity,
-        duration: 0.3,
-        ease: 'power2.out'
-      });
+      // Directly set the opacity style instead of using GSAP for this simple case
+      scrollIndicatorRef.current.style.opacity = opacity.toString();
     }
   }, [scrollPosition]);
 
@@ -86,6 +86,9 @@ const Hero: React.FC = () => {
 
   return (
     <div className="hero" ref={heroRef}>
+      <div className="avatar-container">
+        <img src={avatar} alt="Karutoil" className="avatar-image" />
+      </div>
       <div className="glitch-container">
         <div className="glitch" data-text="KARUTOIL" ref={glitchRef}>KARUTOIL</div>
       </div>
