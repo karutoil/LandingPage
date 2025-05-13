@@ -72,7 +72,7 @@ const WorkExperience: React.FC = () => {
               <li><span>WHMCS</span> - Billing and client management automation system for hosting companies</li>
               <li><span>ProxMox</span> - Open-source virtualization platform for managing VMs and containers</li>
               <li><span>VirtFusion</span> - Advanced VM management solution for hosting providers</li>
-              <li><span>Tenantos</span> - Multi-tenant management platform for service providers</li>
+              <li><span>Tenantos</span> - Server Business Automation for service providers</li>
               <li><span>PXE Image Creation</span> - Network boot server configurations for automated deployments</li>
               <li><span>Baremetal Deployment</span> - Hardware-level server provisioning and configuration</li>
             </ul>
