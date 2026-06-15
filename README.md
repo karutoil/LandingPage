@@ -22,9 +22,9 @@ npm run build
 3. Under **Build and deployment → Source**, select **GitHub Actions**.
 4. The workflow in `.github/workflows/deploy.yml` will build and deploy the site on every push to `main`.
 
-### Base path
+### Custom domain
 
-The Vite base path is set to `/LandingPage/` when `GH_PAGES=true`. If your repository name is different, update the `base` value in `vite.config.ts`.
+The `CNAME` file points to `karutoil.site`, and `vite.config.ts` uses base path `/`. If you do not use a custom domain, update `vite.config.ts` to your repository name:
 
 ```ts
 base: '/YOUR-REPO-NAME/'
