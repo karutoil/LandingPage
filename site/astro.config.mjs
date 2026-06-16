@@ -1,10 +1,11 @@
 import { defineConfig } from 'astro/config';
 
-// GitHub Pages project site: served under /LandingPage/
-// For a custom domain, remove `base`.
+// Served at the root of karutoil.site via GitHub Pages custom domain.
+// If you ever drop the custom domain and use the default project page URL
+// (https://karutoil.github.io/LandingPage/), set base back to '/LandingPage'.
 export default defineConfig({
-  site: 'https://karutoil.github.io',
-  base: '/LandingPage',
+  site: 'https://karutoil.site',
+  base: '/',
   output: 'static',
   outDir: './dist',
   build: {

@@ -40,4 +40,4 @@ A workflow already lives at `.github/workflows/deploy.yml`.
 2. Go to **Settings → Pages → Build and deployment** and select **GitHub Actions**.
 3. On the next push to `main`, the site builds and deploys.
 
-The site is configured for a project page at `https://karutoil.github.io/LandingPage/`. If you add a custom domain later, remove `base: '/LandingPage'` from `site/astro.config.mjs`.
+The site is configured for a custom domain at `https://karutoil.site`. The `CNAME` file is in `site/public/CNAME` and GitHub Pages uses it automatically on deploy. If you ever use the default project page URL, set `base: '/LandingPage'` in `site/astro.config.mjs` again.
