@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&family=Syne:wght@400..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=JetBrains+Mono:wght@100..800&family=Outfit:wght@100..900&display=swap');
 
 :root {
   --bg: #050507;
@@ -16,8 +16,9 @@
   --radius: 3px;
   --shadow: 0 28px 90px rgba(0, 0, 0, 0.6);
   --transition: cubic-bezier(0.22, 1, 0.36, 1);
-  --font-display: 'Syne', system-ui, sans-serif;
-  --font-mono: 'Azeret Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-display: 'Bodoni Moda', Georgia, 'Times New Roman', serif;
+  --font-body: 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 *, *::before, *::after {
@@ -45,9 +46,9 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: var(--font-mono);
-  font-size: 14px;
-  line-height: 1.7;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
   color: var(--text);
   background-color: var(--bg);
   cursor: default;
@@ -134,10 +135,9 @@ code, pre {
 /* ---------- Type ---------- */
 .display {
   font-family: var(--font-display);
-  font-weight: 800;
-  line-height: 0.92;
-  letter-spacing: -0.04em;
-  text-transform: uppercase;
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
 }
 
 .label {
@@ -305,9 +305,8 @@ code, pre {
 .section-header h2 {
   font-family: var(--font-display);
   font-size: clamp(2.2rem, 5.5vw, 3.8rem);
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.02em;
-  text-transform: uppercase;
 }
 
 .section-line {
@@ -382,10 +381,9 @@ code, pre {
 
 .nav-logo {
   font-family: var(--font-display);
-  font-size: 1.35rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .nav-logo span { color: var(--accent); }
@@ -555,10 +553,9 @@ code, pre {
 .hero h1 {
   font-family: var(--font-display);
   font-size: clamp(4rem, 11vw, 10rem);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 0.85;
   letter-spacing: -0.06em;
-  text-transform: uppercase;
 }
 
 .hero h1 .accent { color: var(--accent); }
@@ -718,7 +715,7 @@ code, pre {
 .stat-value {
   font-family: var(--font-display);
   font-size: clamp(2rem, 4.5vw, 3rem);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1;
   color: var(--accent);
 }
@@ -785,10 +782,9 @@ code, pre {
 .project-title {
   font-family: var(--font-display);
   font-size: 1.65rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.05;
-  text-transform: uppercase;
 }
 
 .project-role {
@@ -894,9 +890,8 @@ code, pre {
 .exp-card h3 {
   font-family: var(--font-display);
   font-size: 1.6rem;
-  font-weight: 800;
+  font-weight: 700;
   margin-bottom: 1rem;
-  text-transform: uppercase;
 }
 
 .exp-card ul li {
@@ -945,8 +940,7 @@ code, pre {
 .contact-card h3 {
   font-family: var(--font-display);
   font-size: 1.5rem;
-  font-weight: 800;
-  text-transform: uppercase;
+  font-weight: 700;
 }
 
 .contact-card a { margin-top: auto; }
@@ -1016,11 +1010,10 @@ code, pre {
 
 .page-header h1 {
   font-family: var(--font-display);
-  font-size: clamp(3.5rem, 10vw, 8rem);
-  font-weight: 800;
-  letter-spacing: -0.05em;
-  line-height: 0.9;
-  text-transform: uppercase;
+  font-size: clamp(3.25rem, 9vw, 7rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
 }
 
 .page-header p {
