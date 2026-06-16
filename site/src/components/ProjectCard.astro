@@ -1,4 +1,5 @@
 ---
+import { base } from '../lib/base';
 import type { Project } from '../data/profile';
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
 }
 
 const { project, class: className = '' } = Astro.props;
+const mockupSrc = project.mockup ? `${base}${project.mockup.replace(/^\//, '')}` : null;
 ---
 
 <article class={`card project-card ${project.featured ? 'featured' : ''} ${className}`}>
@@ -34,7 +36,7 @@ const { project, class: className = '' } = Astro.props;
   {
     project.mockup && (
       <div class="project-mockup">
-        <img src={project.mockup} alt={`${project.title} interface mockup`} loading="lazy" width="400" height="240" />
+        <img src={mockupSrc} alt={`${project.title} interface mockup`} loading="lazy" width="400" height="240" />
       </div>
     )
   }
