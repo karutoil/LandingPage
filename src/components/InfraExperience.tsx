@@ -12,11 +12,11 @@ export default function InfraExperience() {
   return (
     <section id="infra" className="px-6 py-24">
       <div ref={ref} className="mx-auto max-w-7xl">
-        <div className="mb-12 flex items-center gap-3 text-signal">
-          <span className="h-px w-10 bg-signal" />
-          <span className="font-mono text-xs font-bold uppercase tracking-widest">/infrastructure</span>
+        <div className="mb-8 flex items-center gap-3 text-oxide">
+          <span className="h-px w-10 bg-oxide" />
+          <span className="font-mono text-xs font-semibold uppercase tracking-widest text-mist">/infrastructure</span>
         </div>
-        <h3 className="mb-12 font-display text-4xl font-bold text-pearl md:text-5xl">
+        <h3 className="mb-12 font-display text-4xl font-medium text-pearl md:text-5xl">
           Production scars, documented.
         </h3>
 
@@ -26,20 +26,20 @@ export default function InfraExperience() {
             return (
               <motion.div
                 key={block.id}
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: i * 0.15 }}
-                className="terminal-border relative overflow-hidden bg-plate p-8"
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="terminal-border relative overflow-hidden bg-plate p-8 transition hover:border-oxide/30"
               >
                 <div className="absolute right-4 top-4 font-mono text-5xl font-bold text-void">
                   {block.id}
                 </div>
                 <Icon className="mb-6 h-8 w-8 text-oxide" />
-                <h4 className="font-display text-2xl font-bold text-pearl">{block.title}</h4>
+                <h4 className="font-display text-2xl font-medium text-pearl">{block.title}</h4>
                 <ul className="mt-6 space-y-3">
                   {block.items.map((item) => (
                     <li key={item} className="flex gap-3 text-sm leading-relaxed text-mist">
-                      <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-signal" />
+                      <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-oxide" />
                       {item}
                     </li>
                   ))}

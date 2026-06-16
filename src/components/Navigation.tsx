@@ -27,7 +27,7 @@ export default function Navigation() {
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <a href="#hero" className="font-mono text-sm font-bold tracking-widest text-oxide text-glow-oxide">
+        <a href="#hero" className="font-mono text-sm font-bold tracking-widest text-pearl">
           karutoil
         </a>
 

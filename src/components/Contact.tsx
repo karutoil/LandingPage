@@ -21,13 +21,13 @@ export default function Contact() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
         >
-          <div className="mb-6 flex items-center justify-center gap-3 text-signal">
-            <span className="h-px w-10 bg-signal" />
-            <span className="font-mono text-xs font-bold uppercase tracking-widest">/contact</span>
-            <span className="h-px w-10 bg-signal" />
+          <div className="mb-6 flex items-center justify-center gap-3 text-oxide">
+            <span className="h-px w-10 bg-oxide" />
+            <span className="font-mono text-xs font-semibold uppercase tracking-widest text-mist">/contact</span>
+            <span className="h-px w-10 bg-oxide" />
           </div>
 
-          <h3 className="font-display text-4xl font-bold text-gradient md:text-6xl">
+          <h3 className="font-display text-4xl font-medium text-pearl md:text-6xl">
             Let&apos;s build something reliable.
           </h3>
           <p className="mt-4 text-lg text-mist">
@@ -38,7 +38,7 @@ export default function Contact() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.15 }}
           className="mt-10 grid gap-4 sm:grid-cols-3"
         >
           {Object.entries(contact).map(([key, c]) => {
@@ -49,9 +49,9 @@ export default function Contact() {
                 href={c.href}
                 target={key === "email" ? undefined : "_blank"}
                 rel={key === "email" ? undefined : "noreferrer"}
-                className="terminal-border group flex flex-col items-center gap-3 bg-plate p-6 transition hover:border-oxide"
+                className="terminal-border flex flex-col items-center gap-3 bg-plate p-6 transition hover:border-oxide/40"
               >
-                <Icon className="h-6 w-6 text-oxide transition group-hover:scale-110" />
+                <Icon className="h-6 w-6 text-oxide" />
                 <div className="text-center">
                   <div className="font-mono text-xs uppercase tracking-wider text-dust">{c.label}</div>
                   <div className="mt-1 font-medium text-pearl">{c.value}</div>
@@ -64,7 +64,7 @@ export default function Contact() {
         <motion.p
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: 0.3 }}
           className="mt-12 font-mono text-xs text-dust/80"
         >
           No cookies · No trackers · No analytics

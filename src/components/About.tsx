@@ -14,15 +14,15 @@ export default function About() {
       <div ref={ref} className="mx-auto max-w-7xl">
         <div className="grid gap-12 lg:grid-cols-[1fr,320px]">
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
           >
-            <div className="mb-6 flex items-center gap-3 text-signal">
-              <span className="h-px w-10 bg-signal" />
-              <span className="font-mono text-xs font-bold uppercase tracking-widest">/identity</span>
+            <div className="mb-6 flex items-center gap-3 text-oxide">
+              <span className="h-px w-10 bg-oxide" />
+              <span className="font-mono text-xs font-semibold uppercase tracking-widest text-mist">/identity</span>
             </div>
-            <h3 className="font-display text-4xl font-bold text-gradient md:text-5xl">
+            <h3 className="font-display text-4xl font-medium text-pearl md:text-5xl">
               Built for the parts you never see.
             </h3>
             <div className="mt-8 space-y-6 text-lg leading-relaxed text-mist">
@@ -39,17 +39,17 @@ export default function About() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.7, delay: 0.2 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.15 }}
             className="relative h-fit"
           >
-            <div className="terminal-border relative overflow-hidden bg-plate p-2 glow-signal">
-              <div className="absolute inset-0 -z-10 bg-gradient-to-br from-signal/5 to-transparent" />
+            <div className="terminal-border relative overflow-hidden bg-plate p-2">
+              <div className="absolute inset-0 -z-10 bg-gradient-to-br from-oxide/5 to-transparent" />
               <img
                 src={identity.avatar}
                 alt={`${identity.name} avatar`}
-                className="aspect-square w-full rounded object-cover grayscale transition duration-700 hover:grayscale-0"
+                className="aspect-square w-full rounded object-cover"
               />
               <div className="absolute bottom-4 left-4 rounded bg-void/80 px-3 py-1.5 backdrop-blur">
                 <span className="font-mono text-xs text-oxide">{identity.location}</span>

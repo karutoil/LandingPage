@@ -1,18 +1,8 @@
 import { motion } from "framer-motion"
-import { ArrowDown, Terminal } from "lucide-react"
-import TypewriterText from "./TypewriterText"
 import { identity, specs } from "../data"
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.12 }
-  }
-}
-
 const item = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0 }
 }
 
@@ -20,32 +10,32 @@ export default function Hero() {
   return (
     <section id="hero" className="relative flex min-h-screen flex-col justify-center px-6 pt-24">
       <motion.div
-        variants={container}
         initial="hidden"
         animate="show"
+        transition={{ staggerChildren: 0.1 }}
         className="mx-auto w-full max-w-7xl"
       >
-        <motion.div variants={item} className="mb-6 flex items-center gap-3 text-oxide">
-          <Terminal size={20} />
-          <span className="font-mono text-xs font-bold uppercase tracking-[0.2em]">
-            {identity.availability}
-          </span>
-        </motion.div>
+        <motion.p variants={item} className="font-mono text-xs font-semibold uppercase tracking-[0.25em] text-oxide">
+          {identity.availability}
+        </motion.p>
 
         <motion.h1
           variants={item}
-          className="font-display text-6xl font-bold leading-[0.9] tracking-tight text-gradient md:text-8xl lg:text-9xl"
+          className="mt-6 font-display text-6xl font-medium leading-[0.95] tracking-tight text-pearl md:text-8xl lg:text-9xl"
         >
           {identity.name}
         </motion.h1>
 
-        <motion.div variants={item} className="mt-6 max-w-3xl">
-          <TypewriterText text={identity.title} speed={35} />
-        </motion.div>
+        <motion.p
+          variants={item}
+          className="mt-6 max-w-3xl font-body text-2xl font-light leading-relaxed text-mist md:text-3xl"
+        >
+          {identity.title}
+        </motion.p>
 
         <motion.p
           variants={item}
-          className="mt-6 max-w-2xl text-lg leading-relaxed text-mist md:text-xl"
+          className="mt-4 max-w-2xl text-lg leading-relaxed text-mist/80"
         >
           {identity.tagline}
         </motion.p>
@@ -56,13 +46,13 @@ export default function Hero() {
         >
           <a
             href="#contact"
-            className="glow-oxide rounded bg-oxide px-7 py-3.5 font-mono text-sm font-bold text-void transition hover:scale-105"
+            className="rounded bg-oxide px-7 py-3.5 font-mono text-sm font-bold text-void transition hover:bg-oxide-glow"
           >
             Start a contract
           </a>
           <a
             href="#projects"
-            className="rounded border border-mist/40 bg-plate px-7 py-3.5 font-mono text-sm font-bold text-pearl transition hover:border-signal hover:text-signal"
+            className="rounded border border-mist/30 bg-plate px-7 py-3.5 font-mono text-sm font-bold text-pearl transition hover:border-oxide hover:text-oxide"
           >
             See the work
           </a>
@@ -70,7 +60,7 @@ export default function Hero() {
 
         <motion.div
           variants={item}
-          className="mt-16 grid max-w-3xl grid-cols-2 gap-4 border-t border-dust/40 pt-8 md:grid-cols-5"
+          className="mt-16 grid max-w-3xl grid-cols-2 gap-6 border-t border-dust/30 pt-8 md:grid-cols-5"
         >
           <Spec label="OS" value={specs.os} />
           <Spec label="Kernel" value={specs.kernel} />
@@ -79,17 +69,6 @@ export default function Hero() {
           <Spec label="Status" value={specs.status} colSpan />
         </motion.div>
       </motion.div>
-
-      <motion.a
-        href="#stats"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-mist transition hover:text-oxide"
-        aria-label="Scroll down"
-      >
-        <ArrowDown className="animate-bounce" size={24} />
-      </motion.a>
     </section>
   )
 }
