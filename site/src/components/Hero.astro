@@ -1,16 +1,22 @@
 ---
 import { base } from '../lib/base';
 import { profile } from '../data/profile';
+import Terminal from './Terminal.astro';
+
+const commands = [
+  { cmd: 'whoami', output: 'karutoil — systems engineer / ai tooling / game ops' },
+  { cmd: 'uptime', output: '1,826+ days — 24/7 on-call ready' },
+  { cmd: 'ls ~/projects', output: 'pi-web  pi-lsp  pi-enhanced-tools  catalyst' },
+  { cmd: 'cat status.txt', output: 'available for contracts — remote (utc-7)' }
+];
 ---
 
 <section class="hero">
   <div class="container hero-grid">
     <div class="hero-content">
-      <div class="hero-eyebrow reveal">{profile.title}</div>
-      <h1 class="reveal reveal-delay-1">
-        <span class="outline">sys</span>tems
-        <br />
-        <span class="italic-accent">engineer</span>
+      <div class="hero-eyebrow reveal">Systems Engineer</div>
+      <h1 class="reveal reveal-delay-1 text-balance">
+        <span class="muted">kar</span><span class="accent">uto</span>il
       </h1>
       <p class="hero-subtitle reveal reveal-delay-2">{profile.tagline}</p>
       <div class="hero-meta reveal reveal-delay-3">
@@ -22,13 +28,11 @@ import { profile } from '../data/profile';
       </div>
       <div class="hero-actions reveal reveal-delay-4">
         <a href={`${base}projects/`} class="cta">View Projects</a>
-        <a href={`${base}contact/`} class="link-arrow link-underline">Get in touch →</a>
+        <a href={`${base}contact/`} class="cta secondary">Get in touch</a>
       </div>
     </div>
     <div class="hero-visual reveal reveal-delay-5">
-      <div class="avatar-frame" tabindex="0">
-        <img src={profile.avatar} alt="" width="380" height="380" loading="eager" />
-      </div>
+      <Terminal commands={commands} />
     </div>
   </div>
 </section>

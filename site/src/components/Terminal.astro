@@ -1,0 +1,98 @@
+---
+interface Command {
+  cmd: string;
+  output: string;
+}
+
+interface Props {
+  commands: Command[];
+}
+
+const { commands } = Astro.props;
+---
+
+<div class="terminal" data-terminal aria-label="Terminal preview">
+  <div class="terminal-header">
+    <span class="terminal-dot red"></span>
+    <span class="terminal-dot yellow"></span>
+    <span class="terminal-dot green"></span>
+    <span class="terminal-title">karutoil@rack-01 — ~</span>
+  </div>
+  <div class="terminal-body">
+    {
+      commands.map((command, i) => (
+        <div class="terminal-block" data-block-index={i} data-cmd={command.cmd} data-output={command.output}>
+          <div class="terminal-line terminal-prompt">
+            <span class="user">karutoil</span>@<span class="host">rack-01</span>:<span class="path">~</span>$ <span class="command-text"></span><span class="terminal-cursor"></span>
+          </div>
+          <div class="terminal-line terminal-output" style="display: none; white-space: pre-wrap;"></div>
+        </div>
+      ))
+    }
+    <div class="terminal-line terminal-prompt" data-final>
+      <span class="user">karutoil</span>@<span class="host">rack-01</span>:<span class="path">~</span>$ <span class="terminal-cursor"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+  const TYPE_SPEED = 38;
+  const LINE_DELAY = 240;
+
+  function prefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  function sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, prefersReducedMotion() ? 0 : ms));
+  }
+
+  async function runTerminal(container: HTMLElement) {
+    const blocks = container.querySelectorAll<HTMLElement>('[data-block-index]');
+    const final = container.querySelector<HTMLElement>('[data-final]');
+    if (final) final.style.display = 'none';
+
+    for (const block of blocks) {
+      const promptLine = block.querySelector<HTMLElement>('.terminal-prompt');
+      const command = block.dataset.cmd || '';
+      const outputText = block.dataset.output || '';
+      const commandEl = block.querySelector<HTMLElement>('.command-text');
+      const outputEl = block.querySelector<HTMLElement>('.terminal-output');
+      const cursor = block.querySelector<HTMLElement>('.terminal-cursor');
+      if (!commandEl || !outputEl || !cursor || !promptLine) continue;
+
+      promptLine.classList.add('visible');
+      cursor.style.display = 'inline-block';
+      commandEl.textContent = '';
+      outputEl.style.display = 'none';
+      outputEl.textContent = '';
+
+      if (prefersReducedMotion()) {
+        commandEl.textContent = command;
+      } else {
+        for (let i = 0; i <= command.length; i++) {
+          commandEl.textContent = command.slice(0, i);
+          await sleep(TYPE_SPEED);
+        }
+      }
+
+      await sleep(LINE_DELAY);
+      outputEl.textContent = outputText;
+      outputEl.style.display = 'block';
+      cursor.style.display = 'none';
+    }
+
+    if (final) final.style.display = 'block';
+  }
+
+  function initTerminals() {
+    document.querySelectorAll<HTMLElement>('[data-terminal]').forEach((term) => {
+      if (term.dataset.animated === 'true') return;
+      term.dataset.animated = 'true';
+      runTerminal(term);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initTerminals);
+  document.addEventListener('astro:page-load', initTerminals);
+</script>

@@ -16,18 +16,18 @@ const featured = profile.projects.filter((p) => p.featured).slice(0, 3);
   <section class="page-section" aria-labelledby="about-heading">
     <div class="container">
       <div class="section-header reveal">
-        <h2 id="about-heading">About</h2>
+        <h2 id="about-heading">Operator</h2>
         <span class="section-line"></span>
       </div>
       <div class="reveal">
-        {profile.bio.map((paragraph) => <p class="dim" style="max-width: 70ch; margin-bottom: 1rem;">{paragraph}</p>)}
+        {profile.bio.map((paragraph) => <p class="dim" style="max-width: 70ch; margin-bottom: 1.1rem;">{paragraph}</p>)}
       </div>
 
       <div class="section-header reveal mt-6">
         <h2 style="font-size: 1.5rem;">Stack</h2>
         <span class="section-line"></span>
       </div>
-      <ul class="split-list reveal">
+      <ul class="stack-list reveal">
         {profile.stack.map((tech) => <li>{tech}</li>)}
       </ul>
     </div>

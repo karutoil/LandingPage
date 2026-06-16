@@ -19,12 +19,18 @@ function isActive(href: string, path: string) {
 }
 ---
 
-<header class="nav" id="nav" data-current={currentPath}>
+<header class="nav" id="nav">
   <div class="container">
-    <a href={`${base}`} class="nav-logo" aria-label="karutoil home">
+    <a href={base} class="nav-logo" aria-label="karutoil home">
       karut<span>oil</span>
     </a>
-    <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-menu">
+    <button
+      class="nav-toggle"
+      id="nav-toggle"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="nav-menu"
+    >
       <span></span>
       <span></span>
       <span></span>
@@ -50,18 +56,13 @@ function isActive(href: string, path: string) {
     const nav = document.getElementById('nav');
     const toggle = document.getElementById('nav-toggle') as HTMLButtonElement | null;
     const menu = document.getElementById('nav-menu');
-
     if (!nav || !toggle || !menu) return;
 
-    // Scroll state
-    const onScroll = () => {
-      nav.classList.toggle('scrolled', window.scrollY > 30);
-    };
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 30);
     window.removeEventListener('scroll', onScroll);
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
-    // Mobile toggle
     const onToggle = () => {
       const isOpen = nav.classList.toggle('open');
       toggle.setAttribute('aria-expanded', String(isOpen));
@@ -71,7 +72,6 @@ function isActive(href: string, path: string) {
     toggle.removeEventListener('click', onToggle);
     toggle.addEventListener('click', onToggle);
 
-    // Close menu when a link is clicked
     menu.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', () => {
         nav.classList.remove('open');

@@ -1,15 +1,14 @@
 ---
 import { profile } from '../data/profile';
+
+const suffixes = ['', '', '', ''];
 ---
 
 <section class="container">
   <div class="stats">
     {
       profile.stats.map((stat, i) => (
-        <article
-          class="stat reveal"
-          style={`animation-delay: ${0.1 * i}s`}
-        >
+        <article class="stat reveal">
           <div class="stat-value">{stat.value}</div>
           <div class="stat-label">{stat.label}</div>
         </article>

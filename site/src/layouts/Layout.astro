@@ -12,7 +12,6 @@ interface Props {
 }
 
 const { title = profile.name, description = profile.tagline } = Astro.props;
-const base = import.meta.env.BASE_URL;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 ---
 
@@ -22,7 +21,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#090a0c" />
+    <meta name="theme-color" content="#050507" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <link rel="canonical" href={canonical} />
@@ -30,10 +29,32 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     <ClientRouter />
   </head>
   <body>
+    <div class="scanlines" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
     <Nav currentPath={Astro.url.pathname} />
     <main id="main">
       <slot />
     </main>
     <Footer />
+    <script>
+      function initReveals() {
+        const items = document.querySelectorAll<HTMLElement>('.reveal');
+        if (!items.length) return;
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+        );
+        items.forEach((item) => observer.observe(item));
+      }
+      document.addEventListener('DOMContentLoaded', initReveals);
+      document.addEventListener('astro:page-load', initReveals);
+    </script>
   </body>
 </html>
