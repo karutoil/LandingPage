@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" fill="none">
+  <rect width="400" height="240" rx="3" fill="#0b0b0f" stroke="rgba(255,247,237,0.08)"/>
+  <rect width="400" height="26" fill="rgba(255,247,237,0.04)"/>
+  <circle cx="14" cy="13" r="4" fill="#ff4d4d"/>
+  <circle cx="28" cy="13" r="4" fill="#ff9f1c"/>
+  <circle cx="42" cy="13" r="4" fill="#22c55e"/>
+  <text x="380" y="17" text-anchor="end" font-family="monospace" font-size="9" fill="#7a7c8a">catalyst</text>
+
+  <rect x="10" y="38" width="380" height="42" rx="2" fill="rgba(255,247,237,0.03)" stroke="rgba(255,247,237,0.06)"/>
+  <text x="20" y="60" font-family="monospace" font-size="8" fill="#7a7c8a">NODES</text>
+  <text x="20" y="72" font-family="monospace" font-size="10" fill="#f7f5ef">3 active / 0 degraded</text>
+  <text x="260" y="60" font-family="monospace" font-size="8" fill="#7a7c8a">LATENCY</text>
+  <text x="260" y="72" font-family="monospace" font-size="10" fill="#00e5ff">&lt;10ms</text>
+  <text x="330" y="60" font-family="monospace" font-size="8" fill="#7a7c8a">SERVERS</text>
+  <text x="330" y="72" font-family="monospace" font-size="10" fill="#ff9f1c">47</text>
+
+  <rect x="10" y="90" width="180" height="68" rx="2" fill="rgba(255,247,237,0.02)" stroke="rgba(255,247,237,0.06)"/>
+  <text x="20" y="110" font-family="monospace" font-size="8" fill="#7a7c8a">CPU / node-ams1</text>
+  <rect x="20" y="120" width="150" height="8" rx="1" fill="rgba(255,247,237,0.06)"/>
+  <rect x="20" y="120" width="98" height="8" rx="1" fill="#ff9f1c"/>
+  <text x="20" y="145" font-family="monospace" font-size="8" fill="#7a7c8a">RAM / node-ams1</text>
+  <rect x="20" y="152" width="150" height="8" rx="1" fill="rgba(255,247,237,0.06)"/>
+  <rect x="20" y="152" width="120" height="8" rx="1" fill="#00e5ff"/>
+
+  <rect x="200" y="90" width="190" height="68" rx="2" fill="rgba(255,247,237,0.02)" stroke="rgba(255,247,237,0.06)"/>
+  <text x="212" y="110" font-family="monospace" font-size="8" fill="#7a7c8a">LIVE CONSOLE</text>
+  <text x="212" y="128" font-family="monospace" font-size="8" fill="#f7f5ef">[catalyst] backup complete</text>
+  <text x="212" y="142" font-family="monospace" font-size="8" fill="#f7f5ef">[node-ams1] container started</text>
+  <text x="212" y="156" font-family="monospace" font-size="8" fill="#ff4d4d">[node-fra1] crash detected</text>
+
+  <rect x="10" y="170" width="380" height="60" rx="2" fill="rgba(255,247,237,0.02)" stroke="rgba(255,247,237,0.06)"/>
+  <text x="20" y="188" font-family="monospace" font-size="8" fill="#7a7c8a">PERMISSIONS</text>
+  <text x="20" y="206" font-family="monospace" font-size="9" fill="#f7f5ef">server.create · server.delete · backup.restore</text>
+  <text x="20" y="222" font-family="monospace" font-size="9" fill="#f7f5ef">user.manage · audit.read · api.key.rotate</text>
+</svg>

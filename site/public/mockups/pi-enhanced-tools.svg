@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" fill="none">
+  <rect width="400" height="240" rx="3" fill="#0b0b0f" stroke="rgba(255,247,237,0.08)"/>
+  <rect width="400" height="26" fill="rgba(255,247,237,0.04)"/>
+  <circle cx="14" cy="13" r="4" fill="#ff4d4d"/>
+  <circle cx="28" cy="13" r="4" fill="#ff9f1c"/>
+  <circle cx="42" cy="13" r="4" fill="#22c55e"/>
+  <text x="380" y="17" text-anchor="end" font-family="monospace" font-size="9" fill="#7a7c8a">pi-enhanced-tools</text>
+
+  <rect x="10" y="38" width="380" height="192" rx="2" fill="rgba(255,247,237,0.02)" stroke="rgba(255,247,237,0.06)"/>
+  <text x="20" y="56" font-family="monospace" font-size="9" fill="#f7f5ef"><tspan fill="#00e5ff">karutoil@rack-01</tspan>:<tspan fill="#7a7c8a">~</tspan>$ pi-tool --list</text>
+  <text x="20" y="78" font-family="monospace" font-size="9" fill="#7a7c8a">TOOL        DESCRIPTION</text>
+  <text x="20" y="96" font-family="monospace" font-size="9" fill="#f7f5ef">patch       unified-diff apply with auto-locate</text>
+  <text x="20" y="112" font-family="monospace" font-size="9" fill="#f7f5ef">outline     file structure without implementation noise</text>
+  <text x="20" y="128" font-family="monospace" font-size="9" fill="#f7f5ef">rg          structured ripgrep search</text>
+  <text x="20" y="144" font-family="monospace" font-size="9" fill="#f7f5ef">find        project-aware file discovery</text>
+  <text x="20" y="160" font-family="monospace" font-size="9" fill="#f7f5ef">test        detect, run, and report failures</text>
+  <text x="20" y="176" font-family="monospace" font-size="9" fill="#f7f5ef">refactor    multi-file rename orchestration</text>
+  <text x="20" y="198" font-family="monospace" font-size="9" fill="#f7f5ef"><tspan fill="#00e5ff">karutoil@rack-01</tspan>:<tspan fill="#7a7c8a">~</tspan>$ <tspan fill="#ff9f1c">_</tspan></text>
+</svg>

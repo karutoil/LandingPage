@@ -1,10 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import Particles from '../components/Particles.astro';
 import { profile } from '../data/profile';
 ---
 
 <Layout title="Projects — karutoil" description="Agent-native tooling, game-server operations, and infrastructure projects.">
+  <Particles color="255, 159, 28" count={70} />
+
   <div class="page-header">
     <div class="container">
       <h1 class="reveal">Projects</h1>

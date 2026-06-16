@@ -855,6 +855,29 @@ code, pre {
   box-shadow: 0 0 16px rgba(255, 159, 28, 0.18);
 }
 
+.project-mockup {
+  aspect-ratio: 5 / 3;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-top: 1.1rem;
+  background: var(--surface);
+}
+
+.project-mockup img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--transition), filter 0.6s var(--transition);
+  filter: grayscale(20%) contrast(1.05);
+}
+
+.project-mockup:hover img,
+.project-card:focus-within .project-mockup img {
+  transform: scale(1.04);
+  filter: grayscale(0%) contrast(1);
+}
+
 .projects-page-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1044,6 +1067,73 @@ code, pre {
   text-shadow:
     1px 0 var(--accent-3),
     -1px 0 var(--accent-2);
+}
+
+/* ---------- Cursor ---------- */
+* {
+  cursor: none !important;
+}
+
+@media (pointer: coarse) {
+  *, *::before, *::after {
+    cursor: auto !important;
+  }
+}
+
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate3d(-50%, -50%, 0);
+  mix-blend-mode: difference;
+}
+
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+  transform: translate(-50%, -50%);
+}
+
+.cursor-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  transition: transform 0.15s var(--transition), border-color 0.2s, width 0.2s, height 0.2s;
+}
+
+.cursor.clicked .cursor-ring {
+  transform: translate(-50%, -50%) scale(0.7);
+  border-color: rgba(255, 159, 28, 0.9);
+}
+
+.cursor.on-link .cursor-ring {
+  transform: translate(-50%, -50%) scale(1.5);
+  border-color: rgba(255, 159, 28, 0.7);
+  background: rgba(255, 159, 28, 0.06);
+}
+
+@media (pointer: coarse) {
+  .cursor { display: none; }
+}
+
+/* ---------- Particles ---------- */
+.particles {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.55;
 }
 
 /* ---------- Responsive text ---------- */

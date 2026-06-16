@@ -32,6 +32,13 @@ const { project, class: className = '' } = Astro.props;
   </div>
   <p class="project-desc">{project.description}</p>
   {
+    project.mockup && (
+      <div class="project-mockup">
+        <img src={project.mockup} alt={`${project.title} interface mockup`} loading="lazy" width="400" height="240" />
+      </div>
+    )
+  }
+  {
     project.bullets && project.bullets.length > 0 && (
       <ul class="project-bullets">
         {project.bullets.slice(0, 4).map((bullet) => (

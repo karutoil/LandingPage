@@ -12,6 +12,7 @@ export interface Project {
   bullets: string[];
   tags: string[];
   featured: boolean;
+  mockup?: string;
 }
 
 export interface ExperienceBlock {
@@ -93,7 +94,8 @@ export const profile = {
         'Historical session replay'
       ],
       tags: ['bun', 'hono', 'react', 'websocket', 'sqlite'],
-      featured: true
+      featured: true,
+      mockup: '/mockups/pi-web.svg'
     },
     {
       title: 'pi-lsp',
@@ -110,7 +112,8 @@ export const profile = {
         'Zero external binaries; auto-installs npm deps and bundled grammars'
       ],
       tags: ['typescript', 'tree-sitter', 'lsp', 'wasm'],
-      featured: true
+      featured: true,
+      mockup: '/mockups/pi-lsp.svg'
     },
     {
       title: 'pi-enhanced-tools',
@@ -130,7 +133,8 @@ export const profile = {
         'ask — pause to ask user clarifying questions'
       ],
       tags: ['agent-tooling', 'git', 'security', 'refactoring'],
-      featured: true
+      featured: true,
+      mockup: '/mockups/pi-enhanced-tools.svg'
     },
     {
       title: 'pi-powershell-native',
@@ -145,7 +149,8 @@ export const profile = {
         'Seamless integration with existing tool-call schema'
       ],
       tags: ['powershell', 'windows', 'agent-extension'],
-      featured: false
+      featured: false,
+      mockup: '/mockups/pi-powershell-native.svg'
     },
     {
       title: 'Catalyst',
@@ -166,7 +171,8 @@ export const profile = {
         'Automatic backup/restore and crash detection/recovery'
       ],
       tags: ['typescript', 'rust', 'fastify', 'containerd', 'postgresql', 'redis'],
-      featured: true
+      featured: true,
+      mockup: '/mockups/catalyst.svg'
     }
   ] as Project[],
   experience: [

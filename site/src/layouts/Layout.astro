@@ -36,6 +36,65 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
       <slot />
     </main>
     <Footer />
+    <div class="cursor" id="cursor" aria-hidden="true">
+      <div class="cursor-dot"></div>
+      <div class="cursor-ring"></div>
+    </div>
+    <script>
+      function initCursor() {
+        const cursor = document.getElementById('cursor');
+        if (!cursor) return;
+
+        const isTouch = window.matchMedia('(pointer: coarse)').matches;
+        if (isTouch) return;
+
+        let x = window.innerWidth / 2;
+        let y = window.innerHeight / 2;
+        let targetX = x;
+        let targetY = y;
+        let raf = 0;
+
+        function move() {
+          x += (targetX - x) * 0.18;
+          y += (targetY - y) * 0.18;
+          cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+          raf = requestAnimationFrame(move);
+        }
+
+        document.removeEventListener('mousemove', onMove);
+        document.addEventListener('mousemove', onMove);
+
+        function onMove(e: MouseEvent) {
+          targetX = e.clientX;
+          targetY = e.clientY;
+        }
+
+        document.removeEventListener('mousedown', onDown);
+        document.removeEventListener('mouseup', onUp);
+        document.addEventListener('mousedown', onDown);
+        document.addEventListener('mouseup', onUp);
+
+        function onDown() { cursor.classList.add('clicked'); }
+        function onUp() { cursor.classList.remove('clicked'); }
+
+        const links = document.querySelectorAll('a, button, [role="button"], input, textarea, select');
+        links.forEach((el) => {
+          el.removeEventListener('mouseenter', onEnter);
+          el.removeEventListener('mouseleave', onLeave);
+          el.addEventListener('mouseenter', onEnter);
+          el.addEventListener('mouseleave', onLeave);
+        });
+
+        function onEnter() { cursor.classList.add('on-link'); }
+        function onLeave() { cursor.classList.remove('on-link'); }
+
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(move);
+      }
+
+      document.addEventListener('DOMContentLoaded', initCursor);
+      document.addEventListener('astro:page-load', initCursor);
+    </script>
     <script>
       function initReveals() {
         const items = document.querySelectorAll<HTMLElement>('.reveal');

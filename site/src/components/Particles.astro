@@ -1,0 +1,154 @@
+---
+export interface Props {
+  color?: string;
+  count?: number;
+}
+const { color = '255, 159, 28', count = 60 } = Astro.props;
+---
+
+<canvas
+  class="particles"
+  data-particles
+  data-color={color}
+  data-count={count}
+  aria-hidden="true"
+></canvas>
+
+<script>
+  interface Particle {
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    r: number;
+  }
+
+  function prefersReduced() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  function initParticles() {
+    document.querySelectorAll<HTMLCanvasElement>('[data-particles]').forEach((canvas) => {
+      if (canvas.dataset.ready) return;
+      canvas.dataset.ready = 'true';
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const color = canvas.dataset.color || '255, 159, 28';
+      const baseCount = parseInt(canvas.dataset.count || '60', 10);
+      const isMobile = window.matchMedia('(pointer: coarse)').matches;
+      const count = isMobile ? Math.floor(baseCount / 2) : baseCount;
+
+      let width = 0;
+      let height = 0;
+      let dpr = Math.min(window.devicePixelRatio || 1, 2);
+      let particles: Particle[] = [];
+      let raf = 0;
+      let mouse = { x: -9999, y: -9999 };
+
+      function resize() {
+        const parent = canvas.parentElement || document.body;
+        width = parent.clientWidth;
+        height = parent.clientHeight;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      function spawn() {
+        particles = [];
+        for (let i = 0; i < count; i++) {
+          particles.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            vx: (Math.random() - 0.5) * 0.6,
+            vy: (Math.random() - 0.5) * 0.6,
+            r: Math.random() * 2 + 1
+          });
+        }
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, width, height);
+
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+
+          if (!prefersReduced()) {
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if (p.x < 0 || p.x > width) p.vx *= -1;
+            if (p.y < 0 || p.y > height) p.vy *= -1;
+          }
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${color}, 0.5)`;
+          ctx.fill();
+
+          const connectDist = isMobile ? 90 : 130;
+          for (let j = i + 1; j < particles.length; j++) {
+            const q = particles[j];
+            const dx = p.x - q.x;
+            const dy = p.y - q.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < connectDist) {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(q.x, q.y);
+              ctx.strokeStyle = `rgba(${color}, ${0.25 * (1 - dist / connectDist)})`;
+              ctx.lineWidth = 0.6;
+              ctx.stroke();
+            }
+          }
+
+          const mdx = p.x - mouse.x;
+          const mdy = p.y - mouse.y;
+          const mDist = Math.hypot(mdx, mdy);
+          const mouseRadius = isMobile ? 0 : 160;
+          if (mDist < mouseRadius) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.strokeStyle = `rgba(${color}, ${0.2 * (1 - mDist / mouseRadius)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+
+        raf = requestAnimationFrame(draw);
+      }
+
+      resize();
+      spawn();
+      draw();
+
+      window.addEventListener('resize', () => {
+        resize();
+        spawn();
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
+      });
+
+      window.addEventListener('touchmove', (e) => {
+        if (!e.touches.length) return;
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = e.touches[0].clientX - rect.left;
+        mouse.y = e.touches[0].clientY - rect.top;
+      });
+
+      return () => cancelAnimationFrame(raf);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initParticles);
+  document.addEventListener('astro:page-load', initParticles);
+</script>

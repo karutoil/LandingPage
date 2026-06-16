@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" fill="none">
+  <rect width="400" height="240" rx="3" fill="#0b0b0f" stroke="rgba(255,247,237,0.08)"/>
+  <rect width="400" height="26" fill="rgba(255,247,237,0.04)"/>
+  <circle cx="14" cy="13" r="4" fill="#ff4d4d"/>
+  <circle cx="28" cy="13" r="4" fill="#ff9f1c"/>
+  <circle cx="42" cy="13" r="4" fill="#22c55e"/>
+  <text x="380" y="17" text-anchor="end" font-family="monospace" font-size="9" fill="#7a7c8a">pi-web</text>
+
+  <rect x="10" y="40" width="110" height="190" rx="2" fill="rgba(255,247,237,0.03)" stroke="rgba(255,247,237,0.06)"/>
+  <text x="20" y="60" font-family="monospace" font-size="8" fill="#7a7c8a">PROJECTS</text>
+  <text x="20" y="80" font-family="monospace" font-size="9" fill="#f7f5ef">catalyst</text>
+  <text x="20" y="98" font-family="monospace" font-size="9" fill="#f7f5ef">pi-lsp</text>
+  <text x="20" y="116" font-family="monospace" font-size="9" fill="#ff9f1c" font-weight="bold">pi-web</text>
+  <rect x="14" y="123" width="102" height="1" fill="rgba(255,159,28,0.3)"/>
+  <text x="20" y="145" font-family="monospace" font-size="8" fill="#7a7c8a">SESSIONS</text>
+  <text x="20" y="165" font-family="monospace" font-size="9" fill="#f7f5ef">session-8a2f</text>
+  <text x="20" y="183" font-family="monospace" font-size="9" fill="#f7f5ef">session-91c1</text>
+
+  <rect x="130" y="40" width="260" height="190" rx="2" fill="rgba(255,247,237,0.02)" stroke="rgba(255,247,237,0.06)"/>
+  <text x="145" y="62" font-family="monospace" font-size="8" fill="#7a7c8a">LIVE STREAM</text>
+  <text x="145" y="85" font-family="monospace" font-size="9" fill="#f7f5ef"><tspan fill="#00e5ff">read</tspan> src/data/profile.ts</text>
+  <text x="145" y="105" font-family="monospace" font-size="9" fill="#f7f5ef"><tspan fill="#00e5ff">bash</tspan> find site/src -name "*.astro"</text>
+  <text x="145" y="125" font-family="monospace" font-size="9" fill="#f7f5ef"><tspan fill="#00e5ff">edit</tspan> site/src/styles/global.css</text>
+  <text x="145" y="145" font-family="monospace" font-size="9" fill="#f7f5ef"><tspan fill="#00e5ff">write</tspan> site/public/mockups/pi-web.svg</text>
+  <text x="145" y="165" font-family="monospace" font-size="9" fill="#f7f5ef"><tspan fill="#00e5ff">ls</tspan> site/public/mockups</text>
+  <text x="145" y="190" font-family="monospace" font-size="9" fill="#ff9f1c">thinking...</text>
+</svg>
