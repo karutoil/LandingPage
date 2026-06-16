@@ -1,0 +1,46 @@
+---
+import type { Project } from '../data/profile';
+
+interface Props {
+  project: Project;
+  class?: string;
+}
+
+const { project, class: className = '' } = Astro.props;
+---
+
+<article class={`card project-card ${project.featured ? 'featured' : ''} ${className}`}>
+  <div class="project-header">
+    <div>
+      {project.org && <p class="project-org">{project.org}</p>}
+      <h3 class="project-title">{project.title}</h3>
+      <p class="project-role">{project.role}</p>
+    </div>
+    <a
+      href={project.href}
+      class="project-external"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Open ${project.title} repository`}
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <line x1="10" y1="14" x2="21" y2="3"></line>
+      </svg>
+    </a>
+  </div>
+  <p class="project-desc">{project.description}</p>
+  {
+    project.bullets && project.bullets.length > 0 && (
+      <ul class="project-bullets">
+        {project.bullets.slice(0, 4).map((bullet) => (
+          <li>{bullet}</li>
+        ))}
+      </ul>
+    )
+  }
+  <div class="project-tags">
+    {project.tags.map((tag) => <span>{tag}</span>)}
+  </div>
+</article>

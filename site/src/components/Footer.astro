@@ -1,0 +1,16 @@
+---
+import { base } from '../lib/base';
+import { profile } from '../data/profile';
+---
+
+<footer class="footer">
+  <div class="container">
+    <p class="footer-note">{profile.siteNote}</p>
+    <div class="footer-links">
+      <a href={`${base}`}>Home</a>
+      <a href={`${base}projects/`}>Projects</a>
+      <a href={`${base}experience/`}>Experience</a>
+      <a href={`${base}contact/`}>Contact</a>
+    </div>
+  </div>
+</footer>

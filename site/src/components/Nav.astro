@@ -1,0 +1,87 @@
+---
+import { base } from '../lib/base';
+
+interface Props {
+  currentPath: string;
+}
+const { currentPath } = Astro.props;
+const links = [
+  { href: base, label: 'Home' },
+  { href: `${base}projects/`, label: 'Projects' },
+  { href: `${base}experience/`, label: 'Experience' },
+  { href: `${base}contact/`, label: 'Contact' }
+];
+
+function isActive(href: string, path: string) {
+  const normalized = path.replace(/\/$/, '') || '/';
+  const target = href.replace(/\/$/, '') || '/';
+  return normalized === target;
+}
+---
+
+<header class="nav" id="nav" data-current={currentPath}>
+  <div class="container">
+    <a href={`${base}`} class="nav-logo" aria-label="karutoil home">
+      karut<span>oil</span>
+    </a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <nav class="nav-links" id="nav-menu" aria-label="Primary">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class={isActive(link.href, currentPath) ? 'active' : ''}
+            aria-current={isActive(link.href, currentPath) ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
+
+<script>
+  function initNav() {
+    const nav = document.getElementById('nav');
+    const toggle = document.getElementById('nav-toggle') as HTMLButtonElement | null;
+    const menu = document.getElementById('nav-menu');
+
+    if (!nav || !toggle || !menu) return;
+
+    // Scroll state
+    const onScroll = () => {
+      nav.classList.toggle('scrolled', window.scrollY > 30);
+    };
+    window.removeEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Mobile toggle
+    const onToggle = () => {
+      const isOpen = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
+      toggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    };
+    toggle.removeEventListener('click', onToggle);
+    toggle.addEventListener('click', onToggle);
+
+    // Close menu when a link is clicked
+    menu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Open menu');
+        document.body.style.overflow = '';
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initNav);
+  document.addEventListener('astro:page-load', initNav);
+</script>

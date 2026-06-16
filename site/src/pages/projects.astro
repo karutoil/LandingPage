@@ -1,0 +1,51 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { profile } from '../data/profile';
+
+const big = profile.projects.filter((p) => p.featured);
+const small = profile.projects.filter((p) => !p.featured);
+---
+
+<Layout title="Projects — karutoil" description="Agent-native tooling, game-server operations, and infrastructure projects.">
+  <div class="page-header">
+    <div class="container">
+      <h1 class="reveal">Projects</h1>
+      <p class="reveal reveal-delay-1">Agent-native tooling, game-server platforms, and infrastructure experiments built to run at scale.</p>
+    </div>
+  </div>
+
+  <section class="page-section" aria-labelledby="featured-heading">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2 id="featured-heading">Selected Work</h2>
+        <span class="section-line"></span>
+      </div>
+      <div class="projects-page-grid">
+        {
+          big.map((project, i) => (
+            <ProjectCard project={project} class={`reveal reveal-delay-${Math.min(i + 1, 5)} big`} />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {
+    small.length > 0 && (
+      <section class="page-section" aria-labelledby="more-heading">
+        <div class="container">
+          <div class="section-header reveal">
+            <h2 id="more-heading">More</h2>
+            <span class="section-line"></span>
+          </div>
+          <div class="card-grid">
+            {small.map((project) => (
+              <ProjectCard project={project} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+</Layout>

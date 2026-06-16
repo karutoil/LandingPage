@@ -1,6 +1,9 @@
-node_modules
-dist
-*.local
+# Dependencies & build output
+site/node_modules/
+site/dist/
+site/.astro/
+
+# Session / system files
+.pi/
 .DS_Store
 *.log
-.pi/

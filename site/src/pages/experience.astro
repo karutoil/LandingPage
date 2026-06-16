@@ -1,0 +1,57 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { profile } from '../data/profile';
+---
+
+<Layout title="Experience — karutoil" description="Infrastructure operations, game-server management, and consulting background.">
+  <div class="page-header">
+    <div class="container">
+      <h1 class="reveal">Experience</h1>
+      <p class="reveal reveal-delay-1">
+        Production infrastructure at every layer: bare metal, virtualization, game servers, automation, and AI tooling.
+      </p>
+    </div>
+  </div>
+
+  <section class="page-section" aria-labelledby="ops-heading">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2 id="ops-heading">Operations</h2>
+        <span class="section-line"></span>
+      </div>
+      <div class="experience-grid">
+        {
+          profile.experience.map((exp, i) => (
+            <article class="card exp-card reveal" style={`animation-delay: ${0.12 * i}s`}>
+              <div class="exp-index">{exp.index}</div>
+              <h3>{exp.title}</h3>
+              <ul>
+                {exp.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section" aria-labelledby="stack-heading">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2 id="stack-heading">Tools & Platforms</h2>
+        <span class="section-line"></span>
+      </div>
+      <ul class="split-list reveal">
+        {profile.stack.map((tech) => <li>{tech}</li>)}
+      </ul>
+
+      <div class="section-header reveal mt-6">
+        <h2 style="font-size: 1.5rem;">Impact Note</h2>
+        <span class="section-line"></span>
+      </div>
+      <blockquote class="journal reveal">“{profile.journal.snippet}”<cite>Client work</cite></blockquote>
+    </div>
+  </section>
+</Layout>

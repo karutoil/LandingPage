@@ -1,37 +1,43 @@
-# karutoil — portfolio
+# karutoil — Portfolio
 
-Personal portfolio and resume built with React, Vite, Tailwind CSS, and Framer Motion.
+A multi-page Astro portfolio site. Dark, technical, editorial-meets-terminal aesthetic.
 
-## Development
+- **Framework:** Astro 5 (static output)
+- **Styling:** Plain CSS with design tokens
+- **Runtime:** Bun (Node-compatible via `npm`)
+
+## Pages
+
+- **Home** — hero, stats, about, featured projects, journal snippet
+- **Projects** — full project list (PI Web, pi-lsp, pi-enhanced-tools, pi-powershell-native, Catalyst)
+- **Experience** — infrastructure operations, game ops, consulting
+- **Contact** — Discord, email, GitHub
+
+## Local development
 
 ```bash
-npm install
-npm run dev
+cd site
+bun install
+bun run dev
 ```
+
+Open `http://localhost:4321/LandingPage/`.
 
 ## Build
 
 ```bash
-npm run build
+cd site
+bun run build
 ```
+
+Output is written to `site/dist/`.
 
 ## Deploy to GitHub Pages
 
+A workflow already lives at `.github/workflows/deploy.yml`.
+
 1. Push this repo to GitHub.
-2. Go to **Settings → Pages**.
-3. Under **Build and deployment → Source**, select **GitHub Actions**.
-4. The workflow in `.github/workflows/deploy.yml` will build and deploy the site on every push to `main`.
+2. Go to **Settings → Pages → Build and deployment** and select **GitHub Actions**.
+3. On the next push to `main`, the site builds and deploys.
 
-### Custom domain
-
-The `CNAME` file points to `karutoil.site`, and `vite.config.ts` uses base path `/`. If you do not use a custom domain, update `vite.config.ts` to your repository name:
-
-```ts
-base: '/YOUR-REPO-NAME/'
-```
-
-## Site notes
-
-- No cookies
-- No trackers
-- No analytics
+The site is configured for a project page at `https://karutoil.github.io/LandingPage/`. If you add a custom domain later, remove `base: '/LandingPage'` from `site/astro.config.mjs`.

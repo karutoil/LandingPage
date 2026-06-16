@@ -1,0 +1,19 @@
+---
+import { profile } from '../data/profile';
+---
+
+<section class="container">
+  <div class="stats">
+    {
+      profile.stats.map((stat, i) => (
+        <article
+          class="stat reveal"
+          style={`animation-delay: ${0.1 * i}s`}
+        >
+          <div class="stat-value">{stat.value}</div>
+          <div class="stat-label">{stat.label}</div>
+        </article>
+      ))
+    }
+  </div>
+</section>

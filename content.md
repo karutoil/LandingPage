@@ -130,7 +130,3 @@ Completed infrastructure audit for client. Identified 3 bottlenecks, reduced clo
 - **Discord:** karutoil — https://discord.com/users/96676726397997056 (Fastest response)
 - **Email:** contact@karutoil.site (Formal inquiries)
 - **GitHub:** karutoil — https://github.com/karutoil
-
-## Site Notes
-- No cookies · No trackers · No analytics
-- Static site
