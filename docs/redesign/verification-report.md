@@ -19,6 +19,13 @@
 | Mobile sheet occlusion + geometry | 32 | **0** |
 | Extra adversarial widths (360 / 320px) | 16 loads | **0** |
 
+> **Note on evidence paths.** This report was written during the work, so it references
+> `artifacts/before/*.png`, `artifacts/after/*.png` and repro scripts under `/tmp/`. Those
+> screenshot directories were **deliberately not committed** (39 MB of ad-hoc captures; see
+> `artifacts/` in `.gitignore`). Every measurement, count and pass/fail result below stands on
+> its own; only the image files are absent. The repro commands in Appendix B remain runnable
+> against a local `astro preview`.
+
 ---
 
 ## 1. Build
