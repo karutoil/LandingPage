@@ -7,3 +7,18 @@ site/.astro/
 .pi/
 .DS_Store
 *.log
+
+# Local scratch: agent harnesses, agent state, ad-hoc redesign backups
+.catalyst-code/
+.umans-harness/
+.pre-redesign-backup/
+.redesign-backup-*/
+
+# Ad-hoc verification output (screenshots, one-off scripts).
+# The curated report is tracked at docs/redesign/verification-report.md.
+artifacts/
+
+# Bun is the canonical package manager (see README + CI). Ignore parallel
+# lockfiles so a stray `pnpm install` can't drift from site/bun.lock.
+site/pnpm-lock.yaml
+site/pnpm-workspace.yaml

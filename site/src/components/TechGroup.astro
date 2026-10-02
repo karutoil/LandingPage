@@ -1,0 +1,30 @@
+---
+/**
+ * One Tech Stack group card: a title plus a grid of small rounded tiles,
+ * each an icon square over a tiny label.
+ */
+import Icon from './Icon.astro';
+import type { StackGroup } from '../data/profile';
+
+interface Props {
+  group: StackGroup;
+}
+
+const { group } = Astro.props;
+---
+
+<article class="techGroup">
+  <h3 class="techGroup__title">{group.title}</h3>
+  <div class="techGroup__items">
+    {
+      group.items.map((item) => (
+        <div class="techTile">
+          <span class="techTile__icon" aria-hidden="true">
+            <Icon name={item.icon} size={17} />
+          </span>
+          <span class="techTile__label">{item.label}</span>
+        </div>
+      ))
+    }
+  </div>
+</article>

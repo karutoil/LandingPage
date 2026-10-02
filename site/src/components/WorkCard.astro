@@ -1,0 +1,90 @@
+---
+/**
+ * Flagship home-page work card.
+ *
+ * Layout follows the design mock: an optional preview band, the title with a
+ * trailing "go" affordance, a one-line description, then four labelled fact
+ * rows — Problem / Solution / Tech / Results — each behind a small icon chip.
+ *
+ * A project with no `mockup` never renders an empty grey box: it gets a
+ * designed gradient tile carrying the project initials over a subtle grid.
+ */
+import Icon from './Icon.astro';
+import type { Project } from '../data/profile';
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+
+/** Initials for the no-mockup placeholder tile: "AI Gateway" -> "AG". */
+const initials = project.title
+  .split(/[\s\-_/]+/)
+  .filter(Boolean)
+  .slice(0, 2)
+  .map((word) => word[0]?.toUpperCase() ?? '')
+  .join('');
+
+const facts = [
+  { key: 'problem', label: 'Problem', icon: 'problem', value: project.problem },
+  { key: 'solution', label: 'Solution', icon: 'solution', value: project.solution },
+  { key: 'tech', label: 'Tech', icon: 'tech', value: project.tags.join(' · ') },
+  { key: 'results', label: 'Results', icon: 'results', value: project.results }
+].filter((fact) => Boolean(fact.value));
+---
+
+<article class="workCard">
+  <div class="workCard__media">
+    {
+      project.mockup ? (
+        <img
+          src={project.mockup}
+          alt={`${project.title} — interface preview`}
+          width="640"
+          height="400"
+          loading="lazy"
+          decoding="async"
+        />
+      ) : (
+        <div class="workCard__placeholder gridPattern" aria-hidden="true">
+          <span class="workCard__initials">{initials}</span>
+        </div>
+      )
+    }
+    {project.org && <span class="workCard__flag">{project.org}</span>}
+  </div>
+
+  <div class="workCard__body">
+    <div class="workCard__head">
+      <h3 class="workCard__title">{project.title}</h3>
+      <a
+        class="workCard__go"
+        href={project.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Open ${project.title} on GitHub`}
+      >
+        <Icon name="arrowUpRight" size={15} />
+      </a>
+    </div>
+
+    <p class="workCard__desc">{project.description}</p>
+
+    <div class="workCard__facts">
+      {
+        facts.map((fact) => (
+          <div class="fact">
+            <span class="fact__icon" aria-hidden="true">
+              <Icon name={fact.icon} size={14} />
+            </span>
+            <span>
+              <span class="fact__label">{fact.label}</span>
+              <span class="fact__value">{fact.value}</span>
+            </span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</article>

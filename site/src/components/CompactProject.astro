@@ -1,0 +1,119 @@
+---
+import Icon from './Icon.astro';
+import type { Project } from '../data/profile';
+
+interface Props {
+  project: Project;
+  category?: string;
+  featured?: boolean;
+}
+const { project, category, featured = false } = Astro.props;
+
+// Compact card metadata: prefer an explicit scale/star string, fall back to year.
+const meta = project.scale ?? project.year;
+---
+
+<article
+  class="card card--hover compactProj reveal"
+  data-cat={category ?? project.org ?? 'other'}
+  data-featured={String(featured)}
+>
+  <div class="card__body">
+    <header class="compactProj__top">
+      <span class="chip compactProj__org">{project.org ?? 'Independent'}</span>
+      <span class="meta compactProj__year">{project.year}</span>
+    </header>
+
+    <h3 class="h3 compactProj__title">{project.title}</h3>
+    <p class="small compactProj__role">{project.role}</p>
+    <p class="compactProj__desc">{project.description}</p>
+
+    <ul class="compactProj__tags" aria-label={`${project.title} technologies`}>
+      {project.tags.slice(0, 4).map((tag) => <li class="chip">{tag}</li>)}
+    </ul>
+
+    <footer class="compactProj__foot">
+      <span class="meta compactProj__meta">
+        <Icon name="star" size={13} />
+        {meta}
+      </span>
+      <a
+        class="linkArrow compactProj__link"
+        href={project.href}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Repository
+        <Icon name="arrowUpRight" size={14} />
+      </a>
+    </footer>
+  </div>
+</article>
+
+<style>
+  .compactProj {
+    height: 100%;
+  }
+
+  .compactProj__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+  }
+  .compactProj__org {
+    text-transform: lowercase;
+  }
+
+  .compactProj__title {
+    margin-top: var(--sp-4);
+    overflow-wrap: anywhere;
+  }
+  .compactProj__role {
+    margin-top: 4px;
+    color: var(--accent);
+  }
+  .compactProj__desc {
+    margin-top: var(--sp-3);
+    font-size: var(--fs-sm);
+    line-height: 1.55;
+    color: var(--text-2);
+    /* No line clamp: hiding a full line of the description made cards unfair
+       to compare. Cards instead stretch to the tallest in the row (grid
+       align-items: stretch + .compactProj { height: 100% }), so the footer
+       meta still lines up across a row. */
+  }
+
+  .compactProj__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: var(--sp-4);
+  }
+
+  .compactProj__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    /* Push the meta row to the bottom so it aligns across a row of cards
+       whose descriptions differ in length. */
+    margin-top: auto;
+    padding-top: var(--sp-4);
+    border-top: 1px solid var(--border);
+  }
+  .compactProj__meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .compactProj__meta :global(svg) {
+    color: var(--accent);
+    flex: none;
+  }
+  .compactProj__link {
+    flex: none;
+  }
+</style>

@@ -1,0 +1,72 @@
+---
+import type { ExperienceBlock } from '../data/profile';
+
+interface Props {
+  exp: ExperienceBlock;
+  /** Period label shown on the left rail, e.g. "Ongoing · core discipline". */
+  period?: string;
+  /** One-line summary shown under the title. */
+  summary?: string;
+}
+const { exp, period = 'Ongoing · core discipline', summary } = Astro.props;
+---
+
+<article class="tlRow expRow reveal">
+  <div class="tlRow__date expRow__rail">
+    <span class="expRow__period">{period}</span>
+    <span class="expRow__index mono">Discipline {exp.index}</span>
+  </div>
+
+  <div class="tlRow__body expRow__body">
+    <h3 class="tlRow__title expRow__title">{exp.title}</h3>
+    {summary && <p class="tlRow__desc expRow__summary">{summary}</p>}
+
+    <ul class="list list--check list--cols expRow__items">
+      {exp.items.map((item) => <li>{item}</li>)}
+    </ul>
+  </div>
+</article>
+
+<style>
+  .expRow {
+    align-items: start;
+  }
+
+  .expRow__rail {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .expRow__period {
+    font-family: var(--font-sans);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--text-2);
+    line-height: 1.5;
+  }
+  .expRow__index {
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    font-size: 0.6875rem;
+  }
+
+  .expRow__title {
+    overflow-wrap: anywhere;
+  }
+  .expRow__summary {
+    margin-top: var(--sp-3);
+    max-width: 66ch;
+  }
+
+  .expRow__items {
+    margin-top: var(--sp-5);
+  }
+
+  /* Two-column checklist only while the rail still sits beside the body. */
+  @media (max-width: 720px) {
+    .expRow__items {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

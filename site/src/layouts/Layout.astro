@@ -1,16 +1,11 @@
 ---
-import ClientRouter from 'astro/components/ClientRouter.astro';
 import { base } from '../lib/base';
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import { profile } from '../data/profile';
 
-interface Props {
-  title?: string;
-  description?: string;
-}
-
+interface Props { title?: string; description?: string; }
 const { title = profile.name, description = profile.tagline } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 ---
@@ -21,99 +16,112 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#050507" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f7f6f3" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a0b0d" media="(prefers-color-scheme: dark)" />
     <meta name="generator" content={Astro.generator} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <link rel="canonical" href={canonical} />
     <title>{title}</title>
-    <ClientRouter />
+    <script is:inline>
+      // Runs before the stylesheet paints so the chosen theme is applied with
+      // no flash. `.js` is only set when IntersectionObserver actually exists,
+      // so the CSS `html:not(.js) .reveal` fallback covers engines without it.
+      (function () {
+        var root = document.documentElement;
+        if ('IntersectionObserver' in window) root.classList.add('js');
+        var stored = null;
+        try {
+          stored = localStorage.getItem('theme');
+        } catch (e) {
+          stored = null;
+        }
+        var prefersLight =
+          window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+        var theme = stored === 'light' || stored === 'dark' ? stored : prefersLight ? 'light' : 'dark';
+        root.dataset.theme = theme;
+      })();
+    </script>
   </head>
   <body>
-    <div class="scanlines" aria-hidden="true"></div>
-    <div class="vignette" aria-hidden="true"></div>
+    <a class="skipLink" href="#main">Skip to content</a>
     <Nav currentPath={Astro.url.pathname} />
-    <main id="main">
-      <slot />
-    </main>
+    <main id="main"><slot /></main>
     <Footer />
-    <div class="cursor" id="cursor" aria-hidden="true">
-      <div class="cursor-dot"></div>
-      <div class="cursor-ring"></div>
-    </div>
     <script>
-      function initCursor() {
-        const cursor = document.getElementById('cursor');
-        if (!cursor) return;
+      const initTheme = () => {
+        const root = document.documentElement;
+        const buttons = document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]');
+        if (!buttons.length) return;
 
-        const isTouch = window.matchMedia('(pointer: coarse)').matches;
-        if (isTouch) return;
+        const apply = (theme: string) => {
+          root.dataset.theme = theme;
+          buttons.forEach((button) => {
+            const next = theme === 'dark' ? 'light' : 'dark';
+            button.setAttribute('aria-label', `Switch to ${next} theme`);
+            button.setAttribute('aria-pressed', String(theme === 'light'));
+            button.setAttribute('title', `Switch to ${next} theme`);
+          });
+        };
 
-        let x = window.innerWidth / 2;
-        let y = window.innerHeight / 2;
-        let targetX = x;
-        let targetY = y;
-        let raf = 0;
+        apply(root.dataset.theme === 'light' ? 'light' : 'dark');
 
-        function move() {
-          x += (targetX - x) * 0.18;
-          y += (targetY - y) * 0.18;
-          cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-          raf = requestAnimationFrame(move);
-        }
-
-        document.removeEventListener('mousemove', onMove);
-        document.addEventListener('mousemove', onMove);
-
-        function onMove(e: MouseEvent) {
-          targetX = e.clientX;
-          targetY = e.clientY;
-        }
-
-        document.removeEventListener('mousedown', onDown);
-        document.removeEventListener('mouseup', onUp);
-        document.addEventListener('mousedown', onDown);
-        document.addEventListener('mouseup', onUp);
-
-        function onDown() { cursor.classList.add('clicked'); }
-        function onUp() { cursor.classList.remove('clicked'); }
-
-        const links = document.querySelectorAll('a, button, [role="button"], input, textarea, select');
-        links.forEach((el) => {
-          el.removeEventListener('mouseenter', onEnter);
-          el.removeEventListener('mouseleave', onLeave);
-          el.addEventListener('mouseenter', onEnter);
-          el.addEventListener('mouseleave', onLeave);
+        buttons.forEach((button) => {
+          button.onclick = () => {
+            const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+            apply(next);
+            try {
+              localStorage.setItem('theme', next);
+            } catch (e) {
+              /* Private mode: theme still applies for this page view. */
+            }
+          };
         });
+      };
 
-        function onEnter() { cursor.classList.add('on-link'); }
-        function onLeave() { cursor.classList.remove('on-link'); }
-
-        cancelAnimationFrame(raf);
-        raf = requestAnimationFrame(move);
-      }
-
-      document.addEventListener('DOMContentLoaded', initCursor);
-      document.addEventListener('astro:page-load', initCursor);
-    </script>
-    <script>
-      function initReveals() {
-        const items = document.querySelectorAll<HTMLElement>('.reveal');
+      const initReveal = () => {
+        const items = document.querySelectorAll('.reveal');
         if (!items.length) return;
-        const observer = new IntersectionObserver(
+
+        // Never leave content invisible: no observer or reduced motion means
+        // everything is simply shown.
+        const reduced =
+          window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!('IntersectionObserver' in window) || reduced) {
+          items.forEach((el) => el.classList.add('is-in'));
+          return;
+        }
+
+        const io = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
               if (entry.isIntersecting) {
-                entry.target.classList.add('animate');
-                observer.unobserve(entry.target);
+                entry.target.classList.add('is-in');
+                io.unobserve(entry.target);
               }
             });
           },
-          { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
         );
-        items.forEach((item) => observer.observe(item));
-      }
-      document.addEventListener('DOMContentLoaded', initReveals);
-      document.addEventListener('astro:page-load', initReveals);
+        items.forEach((el) => io.observe(el));
+
+        // Safety net: any renderer that never triggers a scroll (headless
+        // screenshots, OG/PDF tooling) still gets the full page. Anything not
+        // revealed after 1.2s is simply shown.
+        window.setTimeout(() => {
+          items.forEach((el) => el.classList.add('is-in'));
+        }, 1200);
+      };
+
+      const init = () => {
+        initTheme();
+        initReveal();
+      };
+      document.addEventListener('astro:page-load', init);
+      init();
     </script>
   </body>
 </html>

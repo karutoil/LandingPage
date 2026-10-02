@@ -1,38 +1,121 @@
 ---
+/**
+ * Two-column hero. Left: eyebrow, accent headline, lede, actions and meta.
+ * Right: a real portrait panel with capability pills and small floating
+ * chips. The panel keeps its own gradient background, so if the photo is
+ * missing it still reads as an intentional surface rather than an empty box.
+ */
+import Icon from './Icon.astro';
 import { base } from '../lib/base';
 import { profile } from '../data/profile';
-import Terminal from './Terminal.astro';
 
-const commands = [
-  { cmd: 'whoami', output: 'karutoil — systems engineer / ai tooling / game ops' },
-  { cmd: 'uptime', output: '1,826+ days — 24/7 on-call ready' },
-  { cmd: 'ls ~/projects', output: 'pi-web  pi-lsp  pi-enhanced-tools  catalyst' },
-  { cmd: 'cat status.txt', output: 'available for contracts — remote (utc-7)' }
+const [lineOne, lineTwo] = profile.headline;
+
+const capabilities = [
+  { icon: 'layers', label: 'LLM Gateways' },
+  { icon: 'terminal', label: 'Agent Tooling' },
+  { icon: 'server', label: 'Platform Ops' },
+  { icon: 'github', label: 'Open Source' }
 ];
 ---
 
 <section class="hero">
-  <div class="container hero-grid">
-    <div class="hero-content">
-      <div class="hero-eyebrow reveal">Systems Engineer</div>
-      <h1 class="reveal reveal-delay-1 text-balance">
-        <span class="muted">kar</span><span class="accent">uto</span>il
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <p class="eyebrow hero__eyebrow">
+        <span class="dot dot--pulse" aria-hidden="true"></span>
+        Hi, I'm {profile.name}
+      </p>
+
+      <h1 class="hero__title">
+        {lineOne} <span class="hero__title-accent">{lineTwo}</span>
       </h1>
-      <p class="hero-subtitle reveal reveal-delay-2">{profile.tagline}</p>
-      <div class="hero-meta reveal reveal-delay-3">
-        <span class="status">
-          <span class="status-dot" aria-hidden="true"></span>
+
+      <p class="hero__lede">
+        I build the scaffolding around AI models: the gateway every request routes through, the
+        tool runtime an agent calls, and the diagnostics that catch its mistakes before they ship.
+      </p>
+
+      <div class="hero__actions">
+        <a class="btn btn--primary" href={`${base}projects/`}>
+          View My Work
+          <Icon name="arrowRight" size={16} class="btn__icon" />
+        </a>
+        <!-- The mock calls for a "Download Resume" ghost button, but the repo
+             ships no resume PDF, so that label would over-promise and 404.
+             Points at Contact until a real PDF lands in site/public/. -->
+        <a class="btn btn--ghost" href={`${base}contact/`}>
+          Get in Touch
+          <Icon name="mail" size={16} class="btn__icon" />
+        </a>
+      </div>
+
+      <div class="hero__meta">
+        <span class="hero__status">
+          <span class="dot dot--pulse" aria-hidden="true"></span>
           {profile.availability}
         </span>
-        <span>{profile.location}</span>
-      </div>
-      <div class="hero-actions reveal reveal-delay-4">
-        <a href={`${base}projects/`} class="cta">View Projects</a>
-        <a href={`${base}contact/`} class="cta secondary">Get in touch</a>
+        <span><b>Located</b> {profile.location}</span>
+        <span><b>Focus</b> agents · LLM infra · automation</span>
       </div>
     </div>
-    <div class="hero-visual reveal reveal-delay-5">
-      <Terminal commands={commands} />
+
+    <div class="hero__visual">
+      <div class="hero__portrait">
+        <img
+          src={`${base}avatar.webp`}
+          srcset={`${base}avatar-mobile.webp 100w, ${base}avatar-tablet.webp 120w, ${base}avatar.webp 150w, ${base}avatar@2x.webp 300w`}
+          sizes="(max-width: 720px) 92vw, (max-width: 900px) 520px, 44vw"
+          width="150"
+          height="188"
+          alt={`Portrait of ${profile.name}`}
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+
+        <ul class="hero__badges" aria-label="Capabilities">
+          {capabilities.map((item) => (
+            <li class="pillar">
+              <Icon name={item.icon} size={15} />
+              {item.label}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <p class="hero__chip hero__chip--tl">
+        <Icon name="bolt" size={15} />
+        Shipping daily
+      </p>
+      <p class="hero__chip hero__chip--br">
+        <Icon name="chart" size={15} />
+        Production-grade
+      </p>
     </div>
   </div>
 </section>
+
+<style>
+  /* The list of pills is presentational; the layout comes from .hero__badges. */
+  .hero__badges {
+    list-style: none;
+  }
+
+  /* global.css places .hero__chip--br at bottom:96px, which lands on top of
+     the capability pills once they wrap to two rows. Raise it clear of the
+     pill cluster and keep the panel's rounded corner intact. */
+  .hero__visual .hero__chip--br {
+    bottom: auto;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* Floating chips would collide on narrow panels; the pills carry the
+     message on their own there. */
+  @media (max-width: 1024px) {
+    .hero__chip {
+      display: none;
+    }
+  }
+</style>

@@ -1,33 +1,308 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ProjectCard from '../components/ProjectCard.astro';
-import Particles from '../components/Particles.astro';
+import WorkCard from '../components/WorkCard.astro';
+import CompactProject from '../components/CompactProject.astro';
 import { profile } from '../data/profile';
+
+type Category = 'agent' | 'infra' | 'devtools';
+
+/**
+ * Discipline for a project, derived from its existing `org` / `tags` fields.
+ * `org` is free-form in profile.ts, so match on substrings rather than equality.
+ *
+ * This is INDEPENDENT of `featured`: AI Gateway is both flagship and
+ * infrastructure, so the Infrastructure chip must still count it. Cards carry
+ * `data-cat` (discipline) plus `data-featured`, and the script matches either.
+ */
+const categoryOf = (project: (typeof profile.projects)[number]): Category => {
+  const org = (project.org ?? '').toLowerCase();
+  const tags = project.tags.join(' ').toLowerCase();
+  const hay = `${org} ${tags}`;
+  if (/gateway|routing|infrastructur|containerd|platform|cluster|proxmox|docker/.test(hay)) {
+    return 'infra';
+  }
+  if (/agent|memory|plugin|vision|code intelligence|codebase|tree-sitter|lsp|search|mcp/.test(hay)) {
+    return 'agent';
+  }
+  return 'devtools';
+};
+
+const flagship = profile.projects.filter((project) => project.featured);
+const rest = profile.projects.filter((project) => !project.featured);
+
+// Counts are over ALL projects, so a chip's number equals the cards it reveals.
+const counts = {
+  all: profile.projects.length,
+  featured: flagship.length,
+  agent: profile.projects.filter((p) => categoryOf(p) === 'agent').length,
+  infra: profile.projects.filter((p) => categoryOf(p) === 'infra').length,
+  devtools: profile.projects.filter((p) => categoryOf(p) === 'devtools').length,
+};
+
+const filters = [
+  { id: 'all', label: 'All', count: counts.all },
+  { id: 'featured', label: 'Featured', count: counts.featured },
+  { id: 'infra', label: 'Infrastructure', count: counts.infra },
+  { id: 'agent', label: 'Agent Tooling', count: counts.agent },
+  { id: 'devtools', label: 'Developer Tools', count: counts.devtools },
+];
 ---
 
-<Layout title="Projects — karutoil" description="Agent-native tooling, game-server operations, and infrastructure projects.">
-  <Particles color="255, 159, 28" count={70} />
-
-  <div class="page-header">
-    <div class="container">
-      <h1 class="reveal">Projects</h1>
-      <p class="reveal reveal-delay-1">Agent-native tooling, game-server platforms, and infrastructure experiments built to run at scale.</p>
+<Layout
+  title="Projects | karutoil"
+  description="Agent harnesses, LLM gateways, code intelligence, and infrastructure projects by karutoil."
+>
+  <header class="pageHead">
+    <div class="wrap pageHead__in pageHead__grid">
+      <div>
+        <p class="kicker">03 / Selected work</p>
+        <h1 class="pageHead__title">Projects</h1>
+      </div>
+      <p class="pageHead__lede">
+        {profile.projects.length} projects across agent systems, LLM infrastructure, and the operations
+        layer underneath — from a multi-provider LLM gateway to a game-server platform and the plugins
+        that extend coding agents. Every one is built around real constraints: latency, recovery, cost,
+        and trust.
+      </p>
     </div>
+  </header>
+
+  <div class="wrap projectsFilter">
+    <div class="projectsFilter__row" role="group" aria-label="Filter projects by category">
+      {
+        filters.map((filter) => (
+          <button
+            type="button"
+            class={`chip projectsFilter__chip${filter.id === 'all' ? ' chip--active' : ''}`}
+            data-filter={filter.id}
+            aria-pressed={filter.id === 'all' ? 'true' : 'false'}
+          >
+            {filter.label}
+            <span class="projectsFilter__count">{filter.count}</span>
+          </button>
+        ))
+      }
+    </div>
+    <p class="meta projectsFilter__note">
+      {counts.featured} flagship · {rest.length} more repositories on
+      <a class="projectsFilter__gh" href="https://github.com/karutoil" target="_blank" rel="noopener noreferrer">
+        github.com/karutoil
+      </a>
+    </p>
   </div>
 
-  <section class="page-section" aria-labelledby="featured-heading">
-    <div class="container">
-      <div class="section-header reveal">
-        <h2 id="featured-heading">Selected Work</h2>
-        <span class="section-line"></span>
+  <section class="section section--tight" aria-labelledby="flagship-heading" data-filterSection>
+    <div class="wrap">
+      <div class="secHead">
+        <div>
+          <p class="kicker">Flagship</p>
+          <h2 class="secHead__title" id="flagship-heading">The headline projects.</h2>
+          <p class="secHead__sub">
+            The three with the most surface area — a gateway, a platform, and an agent interface.
+          </p>
+        </div>
       </div>
-      <div class="card-grid">
+
+      <div class="workGrid" data-filterGrid>
         {
-          profile.projects.map((project, i) => (
-            <ProjectCard project={project} class={`reveal reveal-delay-${(i % 5) + 1}`} />
+          flagship.map((project) => (
+            <div class="flagWrap" data-cat={categoryOf(project)} data-featured="true">
+              <WorkCard project={project} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-labelledby="all-projects" data-filterSection>
+    <div class="wrap">
+      <div class="secHead">
+        <div>
+          <p class="kicker">Everything else</p>
+          <h2 class="secHead__title" id="all-projects">The rest of the toolbox.</h2>
+          <p class="secHead__sub">
+            Agent plugins, code-intelligence tools, and the small utilities that make daily work faster.
+          </p>
+        </div>
+      </div>
+
+      <div class="projectsGrid" data-filterGrid>
+        {
+          rest.map((project) => (
+            <CompactProject project={project} category={categoryOf(project)} />
           ))
         }
       </div>
     </div>
   </section>
 </Layout>
+
+<style>
+  /* Header: very large h1 on the left, muted lede offset to the right. */
+  .pageHead__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: end;
+    gap: var(--sp-6) var(--sp-12);
+  }
+  .pageHead__grid .pageHead__title {
+    max-width: none;
+  }
+  .pageHead__grid .pageHead__lede {
+    margin-top: 0;
+    max-width: 56ch;
+    color: var(--text-3);
+  }
+
+  /* ---------- filter row ---------- */
+  .projectsFilter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    padding-block: var(--sp-6);
+    border-bottom: 1px solid var(--border);
+  }
+  .projectsFilter__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-width: 0;
+  }
+  .projectsFilter__chip {
+    cursor: pointer;
+  }
+  /* Active state colour comes from the global .chip--active (accent-hi on the
+     accent tint, which clears 4.5:1 in both themes). Only the layout of the
+     count badge is page-specific. */
+  .projectsFilter__count {
+    padding: 1px 6px;
+    border-radius: var(--r-pill);
+    background: var(--surface-2);
+    color: var(--text-3);
+    font-size: 0.6875rem;
+    line-height: 1.5;
+  }
+  .projectsFilter__chip.chip--active .projectsFilter__count {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+  .projectsFilter__note {
+    margin: 0;
+  }
+  .projectsFilter__gh {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .projectsFilter__gh:hover {
+    color: var(--accent-hi);
+  }
+
+  /* ---------- flagship grid ---------- */
+  /* WorkCard is a compact 3-up card, so let .workGrid own its own columns and
+     just normalise the wrapper. Collapses to 2-up at 1024 and 1-up at 720 via
+     global.css; the wrapper must stretch so cards share a baseline. */
+  .flagWrap {
+    display: flex;
+    min-width: 0;
+  }
+  .flagWrap > :global(.workCard) {
+    width: 100%;
+  }
+
+  /* ---------- everything-else grid ---------- */
+  .projectsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-5);
+    align-items: stretch;
+  }
+  .projectsEmpty {
+    margin-top: var(--sp-6);
+    font-size: var(--fs-sm);
+    color: var(--text-3);
+  }
+
+  @media (max-width: 1024px) {
+    .projectsGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 900px) {
+    .pageHead__grid {
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+    }
+    .pageHead__grid .pageHead__lede {
+      margin-top: var(--sp-5);
+    }
+  }
+  @media (max-width: 720px) {
+    .projectsGrid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .projectsFilter {
+      justify-content: flex-start;
+    }
+  }
+  @media (max-width: 560px) {
+    .projectsFilter__chip {
+      font-size: 0.75rem;
+      padding: 6px 10px;
+    }
+  }
+</style>
+
+<script>
+  // Progressive enhancement ONLY.
+  // The static HTML ships every card visible; this script merely hides cards
+  // that do not match the active chip. If it never runs (JS off, crawler,
+  // script error) nothing is hidden and the page shows the full "All" view.
+  const initFilters = () => {
+    const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.projectsFilter__chip'));
+    if (!chips.length) return;
+
+    const items = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-filterGrid] > [data-cat]')
+    );
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-filterSection]'));
+
+    const matches = (item: HTMLElement, filter: string) => {
+      if (filter === 'all') return true;
+      if (filter === 'featured') return item.dataset.featured === 'true';
+      return item.dataset.cat === filter;
+    };
+
+    const apply = (filter: string) => {
+      chips.forEach((chip) => {
+        const on = chip.dataset.filter === filter;
+        chip.setAttribute('aria-pressed', String(on));
+        chip.classList.toggle('chip--active', on);
+      });
+      items.forEach((item) => {
+        item.hidden = !matches(item, filter);
+      });
+      // Hide a whole section (title + grid) when it has no visible cards.
+      sections.forEach((section) => {
+        const grid = section.querySelector<HTMLElement>('[data-filterGrid]');
+        if (!grid) return;
+        const anyVisible = Array.from(grid.children).some(
+          (child) => !(child as HTMLElement).hidden
+        );
+        section.hidden = !anyVisible;
+      });
+    };
+
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => apply(chip.dataset.filter ?? 'all'));
+    });
+
+    // Nothing is filtered on load — the static HTML is already the "All" view.
+  };
+
+  initFilters();
+  document.addEventListener('astro:page-load', initFilters);
+</script>

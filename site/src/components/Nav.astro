@@ -1,87 +1,214 @@
 ---
+/**
+ * Sticky translucent header: brand mark, centred primary nav, theme toggle
+ * and a filled "Let's Talk" pill. The mobile sheet is full-height with 44px+
+ * tap targets and mirrors the theme toggle inside it.
+ */
+import Icon from './Icon.astro';
 import { base } from '../lib/base';
 
-interface Props {
-  currentPath: string;
-}
+interface Props { currentPath: string; }
 const { currentPath } = Astro.props;
+
 const links = [
   { href: base, label: 'Home' },
   { href: `${base}projects/`, label: 'Projects' },
   { href: `${base}experience/`, label: 'Experience' },
+  // No standalone page for this yet - anchor into the home page section.
+  { href: `${base}#open-source`, label: 'Open Source' },
   { href: `${base}contact/`, label: 'Contact' }
 ];
 
-function isActive(href: string, path: string) {
-  const normalized = path.replace(/\/$/, '') || '/';
-  const target = href.replace(/\/$/, '') || '/';
-  return normalized === target;
-}
+const normalize = (path: string) => path.replace(/\/$/, '') || '/';
+const current = normalize(currentPath);
+// A fragment link (e.g. /#open-source) is not a distinct page, so it never
+// claims the current-page state on the home route.
+const isCurrent = (href: string) =>
+  !href.includes('#') && normalize(href) === current;
 ---
 
 <header class="nav" id="nav">
-  <div class="container">
-    <a href={base} class="nav-logo" aria-label="karutoil home">
-      karut<span>oil</span>
+  <div class="wrap nav__inner">
+    <a href={base} class="nav__brand" aria-label="karutoil - home">
+      <span class="nav__mark" aria-hidden="true">AK</span>
+      <span>karutoil</span>
     </a>
-    <button
-      class="nav-toggle"
-      id="nav-toggle"
-      aria-label="Open menu"
-      aria-expanded="false"
-      aria-controls="nav-menu"
-    >
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-    <nav class="nav-links" id="nav-menu" aria-label="Primary">
-      {
-        links.map((link) => (
-          <a
-            href={link.href}
-            class={isActive(link.href, currentPath) ? 'active' : ''}
-            aria-current={isActive(link.href, currentPath) ? 'page' : undefined}
-          >
-            {link.label}
-          </a>
-        ))
-      }
+
+    <nav class="nav__menu" id="nav-menu" aria-label="Primary">
+      {links.map((link) => (
+        <a
+          class="nav__link"
+          href={link.href}
+          aria-current={isCurrent(link.href) ? 'page' : undefined}
+        >{link.label}</a>
+      ))}
+
+      <a class="nav__cta nav__cta--sheet" href={`${base}contact/`}>
+        Let's Talk <Icon name="arrowRight" size={15} />
+      </a>
+
+      <div class="nav__themeRow">
+        <span>Appearance</span>
+        <button
+          class="iconBtn"
+          type="button"
+          data-theme-toggle
+          aria-label="Switch theme"
+          title="Switch theme"
+        >
+          <span class="nav__themeIcon nav__themeIcon--sun"><Icon name="sun" size={18} /></span>
+          <span class="nav__themeIcon nav__themeIcon--moon"><Icon name="moon" size={18} /></span>
+        </button>
+      </div>
     </nav>
+
+    <div class="nav__actions">
+      <button
+        class="iconBtn"
+        type="button"
+        data-theme-toggle
+        aria-label="Switch theme"
+        title="Switch theme"
+      >
+        <span class="nav__themeIcon nav__themeIcon--sun"><Icon name="sun" size={18} /></span>
+        <span class="nav__themeIcon nav__themeIcon--moon"><Icon name="moon" size={18} /></span>
+      </button>
+
+      <a class="nav__cta" href={`${base}contact/`}>
+        Let's Talk <Icon name="arrowRight" size={15} />
+      </a>
+
+      <button
+        class="nav__toggle"
+        id="nav-toggle"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="nav-menu"
+      >
+        <Icon name="menu" size={22} class="nav__toggleIcon--menu" />
+        <Icon name="x" size={22} class="nav__toggleIcon--close" />
+      </button>
+    </div>
   </div>
 </header>
 
 <script>
-  function initNav() {
+  const initNav = () => {
     const nav = document.getElementById('nav');
-    const toggle = document.getElementById('nav-toggle') as HTMLButtonElement | null;
+    const toggle = document.getElementById('nav-toggle');
+    if (!nav || !toggle) return;
+
     const menu = document.getElementById('nav-menu');
-    if (!nav || !toggle || !menu) return;
-
-    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 30);
-    window.removeEventListener('scroll', onScroll);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-
-    const onToggle = () => {
-      const isOpen = nav.classList.toggle('open');
-      toggle.setAttribute('aria-expanded', String(isOpen));
-      toggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
-      document.body.style.overflow = isOpen ? 'hidden' : '';
+    const setOpen = (open) => {
+      nav.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      document.documentElement.classList.toggle('nav-open', open);
     };
-    toggle.removeEventListener('click', onToggle);
-    toggle.addEventListener('click', onToggle);
 
-    menu.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => {
-        nav.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
-        toggle.setAttribute('aria-label', 'Open menu');
-        document.body.style.overflow = '';
+    toggle.onclick = () => setOpen(!nav.classList.contains('is-open'));
+
+    // A tap on a link, Escape, or a jump to desktop closes the sheet.
+    if (menu) {
+      menu.addEventListener('click', (event) => {
+        if (event.target.closest('a')) setOpen(false);
       });
+    }
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && nav.classList.contains('is-open')) {
+        setOpen(false);
+        toggle.focus();
+      }
     });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900 && nav.classList.contains('is-open')) setOpen(false);
+    });
+  };
+
+  document.addEventListener('astro:page-load', initNav);
+  initNav();
+</script>
+
+<style>
+  /* The sheet-only CTA and theme row are inert on desktop. */
+  .nav__cta--sheet,
+  .nav__themeRow {
+    display: none;
   }
 
-  document.addEventListener('DOMContentLoaded', initNav);
-  document.addEventListener('astro:page-load', initNav);
-</script>
+  .nav__toggleIcon--close {
+    display: none;
+  }
+  .nav.is-open .nav__toggleIcon--menu {
+    display: none;
+  }
+  .nav.is-open .nav__toggleIcon--close {
+    display: block;
+  }
+
+  /* Sun shows while dark is active; moon while light is active.
+     Both selectors are kept explicit (and :global() is NOT used) so the
+     scoped attribute rules cannot out-order each other. */
+  .nav__themeIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+  }
+  .nav__themeIcon--moon {
+    display: none;
+  }
+  /* `data-theme` lives on <html>, which never carries this component's scope
+     attribute, so that ancestor selector has to be global while the icon
+     itself stays scoped. */
+  :global(html[data-theme='light']) .nav .nav__themeIcon--sun {
+    display: none;
+  }
+  :global(html[data-theme='light']) .nav .nav__themeIcon--moon {
+    display: inline-flex;
+  }
+
+  /* Prevent the page behind the mobile sheet from scrolling. */
+  :global(html.nav-open) {
+    overflow: hidden;
+  }
+
+  /* Between 721px and 900px global.css keeps the desktop row, but brand +
+     5 nowrap links + toggle + CTA exceed the wrap width and nothing may
+     shrink, which pushed the document ~28px wide. Let the link row shrink
+     and scroll its own overflow, and drop the inner padding a little. */
+  @media (min-width: 721px) and (max-width: 900px) {
+    .nav__menu {
+      min-width: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .nav__menu::-webkit-scrollbar {
+      display: none;
+    }
+    .nav__link {
+      padding: 8px 9px;
+    }
+    .nav__cta {
+      padding: 10px 14px;
+    }
+  }
+
+  /* Keep every control comfortably tappable in the sheet. */
+  @media (max-width: 720px) {
+    .nav__cta--sheet {
+      display: inline-flex;
+      min-height: 48px;
+    }
+    .nav__themeRow {
+      display: flex;
+    }
+    .nav__link {
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+    }
+  }
+</style>

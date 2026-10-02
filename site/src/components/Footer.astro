@@ -1,16 +1,105 @@
 ---
+/**
+ * Footer: a large rounded CTA card (headline + primary action + round social
+ * buttons) followed by a slim bottom bar with the site note and nav links.
+ */
+import Icon from './Icon.astro';
 import { base } from '../lib/base';
 import { profile } from '../data/profile';
+
+const year = new Date().getFullYear();
+
+const socials = [
+  { href: 'https://github.com/karutoil', label: 'GitHub', icon: 'github', external: true },
+  { href: 'https://www.linkedin.com/in/karutoil/', label: 'LinkedIn', icon: 'linkedin', external: true },
+  { href: `mailto:${profile.email}`, label: 'Email', icon: 'mail', external: false }
+];
+
+const navLinks = [
+  { href: base, label: 'Home' },
+  { href: `${base}projects/`, label: 'Projects' },
+  { href: `${base}experience/`, label: 'Experience' },
+  { href: `${base}contact/`, label: 'Contact' }
+];
 ---
 
-<footer class="footer">
-  <div class="container">
-    <p class="footer-note">{profile.siteNote}</p>
-    <nav class="footer-links" aria-label="Footer">
-      <a href={base}>Home</a>
-      <a href={`${base}projects/`}>Projects</a>
-      <a href={`${base}experience/`}>Experience</a>
-      <a href={`${base}contact/`}>Contact</a>
-    </nav>
+<footer class="foot">
+  <div class="wrap foot__ctaWrap">
+    <section class="cta" aria-labelledby="cta-heading">
+      <div class="cta__inner">
+        <div>
+          <h2 class="cta__title" id="cta-heading">Let's build something meaningful.</h2>
+          <p class="cta__text">
+            Available for contracts across agent tooling, LLM infrastructure, and the platform work
+            that keeps them running in production.
+          </p>
+        </div>
+
+        <div class="cta__actions">
+          <a class="btn btn--primary" href={`${base}contact/`}>
+            Send a Message
+            <Icon name="arrowRight" size={16} class="btn__icon" />
+          </a>
+          <div class="cta__social">
+            {socials.map((item) => (
+              <a
+                class="iconBtn"
+                href={item.href}
+                aria-label={item.label}
+                title={item.label}
+                {...(item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              >
+                <Icon name={item.icon} size={18} />
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="wrap">
+    <div class="foot__inner">
+      <div class="foot__brand">
+        <span class="foot__mark" aria-hidden="true">AK</span>
+        <p class="foot__note">{profile.siteNote}</p>
+        <p class="foot__note">© {year} {profile.name}. All rights reserved.</p>
+      </div>
+
+      <nav class="foot__col" aria-label="Footer">
+        <h2 class="sr-only">Footer navigation</h2>
+        <ul class="foot__links">
+          {navLinks.map((link) => (
+            <li><a href={link.href}>{link.label}</a></li>
+          ))}
+          <li>
+            <a href="https://github.com/karutoil" target="_blank" rel="noopener noreferrer">
+              GitHub
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="foot__bottom">
+      <p>Built with Astro · Static by design</p>
+      <p>{profile.location}</p>
+    </div>
   </div>
 </footer>
+
+<style>
+  /* Bottom-bar nav reads as a slim inline row, not a stacked column. */
+  .foot__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3) var(--sp-5);
+  }
+  .foot__col a {
+    font-size: var(--fs-xs);
+    color: var(--text-3);
+  }
+  .foot__col a:hover {
+    color: var(--text);
+  }
+</style>

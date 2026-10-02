@@ -1,57 +1,283 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ExperienceRow from '../components/ExperienceRow.astro';
+import Icon from '../components/Icon.astro';
 import { profile } from '../data/profile';
+
+/**
+ * Period label + one-line summary per discipline, keyed by the stable `id`
+ * already present in profile.ts. Presentation copy only — the items and titles
+ * themselves still come straight from profile.experience.
+ */
+const meta: Record<string, { period: string; summary: string }> = {
+  'llm-infrastructure': {
+    period: 'Ongoing · core discipline',
+    summary:
+      'The plumbing between a product and every model provider — routing, protocol translation, budgets, and the observability that keeps it honest under load.'
+  },
+  'agent-tooling': {
+    period: 'Ongoing · core discipline',
+    summary:
+      'Harnesses, interfaces, and extensions that keep a model useful: code intelligence it can trust, memory that survives a session, and control over the loop.'
+  },
+  'platforms-ops': {
+    period: 'Ongoing · foundation',
+    summary:
+      'The layer everything else runs on — containerd orchestration, bare-metal provisioning, and the network operations that decide whether a launch is boring.'
+  }
+};
+
+const rows = profile.experience.map((exp) => ({
+  exp,
+  ...(meta[exp.id] ?? { period: 'Ongoing · core discipline', summary: undefined })
+}));
+
+/**
+ * Toolbox: group the flat `profile.stack` list under the same headings used on
+ * the home page, falling back to an "Also" bucket so nothing is dropped.
+ */
+const groupOrder = ['Languages', 'Data', 'Infrastructure', 'Platforms'];
+const groupFor = (item: string): string => {
+  if (/^(go|rust|typescript|python|javascript|bash)$/.test(item)) return 'Languages';
+  if (/sqlite|postgresql|redis/.test(item)) return 'Data';
+  if (/docker|containerd|linux|proxmox|ansible|nginx|cloudflare/.test(item)) return 'Infrastructure';
+  return 'Platforms';
+};
+const toolbox = groupOrder
+  .map((title) => ({ title, items: profile.stack.filter((item) => groupFor(item) === title) }))
+  .filter((group) => group.items.length > 0);
+
+/** Display labels for the raw lowercase stack keys (data stays untouched). */
+const labelFor = (item: string): string =>
+  (
+    {
+      go: 'Go',
+      rust: 'Rust',
+      typescript: 'TypeScript',
+      python: 'Python',
+      javascript: 'JavaScript',
+      bash: 'Bash',
+      node: 'Node',
+      bun: 'Bun',
+      react: 'React',
+      astro: 'Astro',
+      sqlite: 'SQLite',
+      postgresql: 'PostgreSQL',
+      redis: 'Redis',
+      websocket: 'WebSocket',
+      docker: 'Docker',
+      containerd: 'containerd',
+      linux: 'Linux',
+      proxmox: 'Proxmox',
+      ansible: 'Ansible',
+      nginx: 'nginx',
+      cloudflare: 'Cloudflare'
+    } as Record<string, string>
+  )[item] ?? item;
 ---
 
-<Layout title="Experience — karutoil" description="Infrastructure operations, game-server management, and consulting background.">
-  <div class="page-header">
-    <div class="container">
-      <h1 class="reveal">Experience</h1>
-      <p class="reveal reveal-delay-1">
-        Production infrastructure at every layer: bare metal, virtualization, game servers, automation, and AI tooling.
+<Layout
+  title="Experience | karutoil"
+  description="AI engineering, automation, and infrastructure operations background."
+>
+  <header class="pageHead">
+    <div class="wrap pageHead__in pageHead__grid">
+      <div>
+        <p class="kicker">02 / What I do</p>
+        <h1 class="pageHead__title">Experience</h1>
+      </div>
+      <p class="pageHead__lede">
+        AI engineering on top, automation through the middle, and a decade of production
+        infrastructure underneath — so the agents I build run somewhere reliable. Three disciplines,
+        one operator.
       </p>
     </div>
-  </div>
+  </header>
 
-  <section class="page-section" aria-labelledby="ops-heading">
-    <div class="container">
-      <div class="section-header reveal">
-        <h2 id="ops-heading">Operations</h2>
-        <span class="section-line"></span>
+  <section class="section" aria-labelledby="disciplines-heading">
+    <div class="wrap">
+      <div class="secHead">
+        <div>
+          <p class="kicker">Three disciplines</p>
+          <h2 class="secHead__title" id="disciplines-heading">One operator, the whole stack.</h2>
+          <p class="secHead__sub">
+            Each discipline is a working lane, not a job title — the projects on the previous page
+            are where they show up.
+          </p>
+        </div>
       </div>
-      <div class="experience-grid">
+
+      <div class="timeline">
+        {rows.map((row) => <ExperienceRow exp={row.exp} period={row.period} summary={row.summary} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-labelledby="tools-heading">
+    <div class="wrap">
+      <div class="secHead">
+        <div>
+          <p class="kicker">Toolbox</p>
+          <h2 class="secHead__title" id="tools-heading">Languages and platforms I build with.</h2>
+          <p class="secHead__sub">
+            The short list — what actually ships in the repositories, not what is on a résumé.
+          </p>
+        </div>
+      </div>
+
+      <div class="toolbox">
         {
-          profile.experience.map((exp, i) => (
-            <article class="card exp-card reveal" style={`animation-delay: ${0.12 * i}s`}>
-              <div class="exp-index">{exp.index}</div>
-              <h3>{exp.title}</h3>
-              <ul>
-                {exp.items.map((item) => (
-                  <li>{item}</li>
-                ))}
+          toolbox.map((group) => (
+            <section class="toolbox__group" aria-labelledby={`toolbox-${group.title.toLowerCase()}`}>
+              <h3 class="toolbox__title" id={`toolbox-${group.title.toLowerCase()}`}>
+                {group.title}
+                <span class="toolbox__count">{group.items.length}</span>
+              </h3>
+              <ul class="stackGrid">
+                {group.items.map((item) => <li class="stackChip">{labelFor(item)}</li>)}
               </ul>
-            </article>
+            </section>
           ))
         }
       </div>
     </div>
   </section>
 
-  <section class="page-section" aria-labelledby="stack-heading">
-    <div class="container">
-      <div class="section-header reveal">
-        <h2 id="stack-heading">Tools & Platforms</h2>
-        <span class="section-line"></span>
-      </div>
-      <ul class="stack-list reveal">
-        {profile.stack.map((tech) => <li>{tech}</li>)}
-      </ul>
-
-      <div class="section-header reveal mt-6">
-        <h2 style="font-size: 1.5rem;">Impact Note</h2>
-        <span class="section-line"></span>
-      </div>
-      <blockquote class="journal reveal">“{profile.journal.snippet}”<cite>Client work</cite></blockquote>
+  <section class="section section--tight" aria-labelledby="impact-heading">
+    <div class="wrap">
+      <figure class="card quoteCard reveal">
+        <div class="card__body">
+          <p class="kicker" id="impact-heading">Recent work · field note 001</p>
+          <blockquote class="quoteCard__text">“{profile.journal.snippet}”</blockquote>
+          <figcaption class="quoteCard__cite">
+            <span class="quoteCard__icon" aria-hidden="true">
+              <Icon name="terminal" size={16} />
+            </span>
+            <span>
+              <span class="quoteCard__who">Agent harness</span>
+              <span class="meta quoteCard__what">ai-gateway · self-hosted, single binary</span>
+            </span>
+          </figcaption>
+        </div>
+      </figure>
     </div>
   </section>
 </Layout>
+
+<style>
+  /* Header: very large h1 on the left, muted lede offset to the right. */
+  .pageHead__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: end;
+    gap: var(--sp-6) var(--sp-12);
+  }
+  .pageHead__grid .pageHead__title {
+    max-width: none;
+  }
+  .pageHead__grid .pageHead__lede {
+    margin-top: 0;
+    max-width: 56ch;
+    color: var(--text-3);
+  }
+
+  /* ---------- toolbox ---------- */
+  .toolbox {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-5);
+  }
+  .toolbox__group {
+    padding: var(--sp-5) var(--sp-6);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+  }
+  .toolbox__title {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    margin-bottom: var(--sp-4);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--text);
+  }
+  .toolbox__count {
+    padding: 1px 7px;
+    border-radius: var(--r-pill);
+    background: var(--surface-2);
+    color: var(--text-3);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+  }
+
+  /* ---------- field note ---------- */
+  .quoteCard {
+    background: linear-gradient(135deg, var(--surface-2) 0%, var(--surface) 60%);
+  }
+  .quoteCard .card__body {
+    padding: clamp(24px, 3.4vw, 44px);
+  }
+  .quoteCard__text {
+    margin-top: var(--sp-4);
+    max-width: 72ch;
+    font-size: var(--fs-lede);
+    line-height: 1.6;
+    color: var(--text);
+    text-wrap: pretty;
+  }
+  .quoteCard__cite {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    margin-top: var(--sp-6);
+    padding-top: var(--sp-5);
+    border-top: 1px solid var(--border);
+  }
+  .quoteCard__icon {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    flex: none;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--accent-line);
+    background: var(--accent-soft);
+    /* Icon on an accent tint: --accent only reaches 4.44:1 in light mode;
+       --accent-hi gives 6.25:1 in light and 8.59:1 in dark. */
+    color: var(--accent-hi);
+  }
+  .quoteCard__icon :global(svg) {
+    width: 16px;
+    height: 16px;
+  }
+  .quoteCard__who {
+    display: block;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--text);
+  }
+  .quoteCard__what {
+    display: block;
+  }
+
+  @media (max-width: 900px) {
+    .pageHead__grid {
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+    }
+    .pageHead__grid .pageHead__lede {
+      margin-top: var(--sp-5);
+    }
+    .toolbox {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 560px) {
+    .toolbox__group {
+      padding: var(--sp-5);
+    }
+  }
+</style>

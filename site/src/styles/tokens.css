@@ -1,0 +1,167 @@
+/* ==========================================================================
+   karutoil — design tokens
+   Single source of truth for color, type, space, radius, depth and motion.
+   Palette sampled directly from the supplied design mock (warm-dark ground,
+   amber accent, near-white headings, cool-grey body copy).
+
+   Theming: `:root` holds the DARK theme (the design's primary look).
+   `[data-theme='light']` overrides it. `color-scheme` is set per theme so
+   native form controls and scrollbars follow along.
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* ---------- surfaces ---------- */
+  --bg: #0a0b0d;
+  --bg-2: #0e1012;
+  --surface: #111314;
+  --surface-2: #161819;
+  --surface-3: #1c1f21;
+
+  /* ---------- lines ---------- */
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+
+  /* ---------- text ---------- */
+  --text: #f6f7f8;   /* headings, high emphasis      */
+  --text-2: #b4b8bc; /* body copy                    */
+  --text-3: #8c9196; /* meta, labels, captions       */
+
+  /* ---------- accent (warm amber, as in the mock) ---------- */
+  --accent-hi: #ffad78;
+  --accent: #fbb782;
+  --accent-deep: #c79564;
+  --accent-ink: #1a1206; /* text placed ON an accent fill */
+
+  --accent-soft: rgba(251, 183, 130, 0.12);
+  --accent-line: rgba(251, 183, 130, 0.28);
+
+  /* ---------- semantic ---------- */
+  --green: #4ade80;
+  --green-soft: rgba(74, 222, 128, 0.14);
+  --danger: #f87171;
+  --danger-soft: rgba(248, 113, 113, 0.14);
+  --info: #7dd3fc;
+  --info-soft: rgba(125, 211, 252, 0.14);
+  --violet: #c4b5fd;
+  --violet-soft: rgba(196, 181, 253, 0.14);
+
+  /* ---------- radius ---------- */
+  --r-sm: 8px;
+  --r: 12px;
+  --r-lg: 16px;
+  --r-xl: 20px;
+  --r-pill: 999px;
+
+  /* ---------- depth ---------- */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px -12px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 2px 4px rgba(0, 0, 0, 0.45), 0 28px 64px -24px rgba(0, 0, 0, 0.7);
+  --ring: 0 0 0 3px rgba(255, 173, 120, 0.32);
+
+  /* ---------- type ---------- */
+  --font-sans: 'Inter var', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SFMono-Regular', ui-monospace, Menlo, Consolas, monospace;
+
+  --fs-display: clamp(2.6rem, 6vw, 4.6rem);
+  --fs-h1: clamp(2.1rem, 4.4vw, 3.4rem);
+  --fs-h2: clamp(1.6rem, 3vw, 2.35rem);
+  --fs-h3: clamp(1.15rem, 1.7vw, 1.4rem);
+  --fs-h4: 1.0625rem;
+  --fs-lede: clamp(1.0625rem, 1.5vw, 1.25rem);
+  --fs-body: 1rem;
+  --fs-sm: 0.9375rem;
+  --fs-xs: 0.8125rem;
+
+  --lh-tight: 1.06;
+  --lh-snug: 1.25;
+  --lh-body: 1.62;
+
+  --tracking-tight: -0.021em;
+  --tracking-wide: 0.08em;
+
+  /* ---------- space ---------- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+  --sp-20: 80px;
+  --sp-24: 96px;
+
+  /* ---------- layout ---------- */
+  --max: 1200px;
+  --gutter: clamp(20px, 4vw, 48px);
+  --nav-h: 72px;
+
+  /* ---------- motion ---------- */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur-1: 0.15s;
+  --dur-2: 0.24s;
+  --dur-3: 0.5s;
+
+  /* ---------- decorative ---------- */
+  --grid-line: rgba(255, 255, 255, 0.045);
+  --scrim: rgba(10, 11, 13, 0.72);
+}
+
+/* ==========================================================================
+   Light theme
+   ========================================================================== */
+
+[data-theme='light'] {
+  color-scheme: light;
+
+  --bg: #f7f6f3;
+  --bg-2: #efeee9;
+  --surface: #ffffff;
+  --surface-2: #f4f3ef;
+  --surface-3: #e9e7e1;
+
+  --border: rgba(20, 22, 25, 0.1);
+  --border-strong: rgba(20, 22, 25, 0.18);
+
+  --text: #15181c;
+  --text-2: #4b5259;
+  /* #6b7280 measured 4.47:1 against --bg (#f7f6f3). Darkened to clear 4.5:1
+     on the page ground as well as on white card surfaces. */
+  --text-3: #656c78;
+
+  /* Warm hues darken in light mode so they keep >=4.5:1 on light surfaces. */
+  --accent-hi: #8a4514;
+  --accent: #a85a1e;
+  --accent-deep: #6d3a12;
+  --accent-ink: #fff8f1;
+
+  --accent-soft: rgba(168, 90, 30, 0.1);
+  --accent-line: rgba(168, 90, 30, 0.3);
+
+  --green: #0f5c2e;
+  --green-soft: rgba(21, 128, 61, 0.12);
+  --danger: #b91c1c;
+  --danger-soft: rgba(185, 28, 28, 0.1);
+  --info: #0369a1;
+  --info-soft: rgba(3, 105, 161, 0.1);
+  --violet: #6d28d9;
+  --violet-soft: rgba(109, 40, 217, 0.1);
+
+  --shadow-sm: 0 1px 2px rgba(20, 22, 25, 0.06);
+  --shadow: 0 1px 2px rgba(20, 22, 25, 0.06), 0 12px 32px -14px rgba(20, 22, 25, 0.18);
+  --shadow-lg: 0 2px 4px rgba(20, 22, 25, 0.07), 0 28px 64px -26px rgba(20, 22, 25, 0.28);
+  --ring: 0 0 0 3px rgba(168, 90, 30, 0.28);
+
+  --grid-line: rgba(20, 22, 25, 0.05);
+  --scrim: rgba(247, 246, 243, 0.78);
+}
+
+/* Explicit dark selection must win over the light block above. */
+[data-theme='dark'] {
+  color-scheme: dark;
+}

@@ -1,0 +1,80 @@
+---
+/**
+ * Compact open-source repo card: name, one-line description, then a meta row
+ * of ★ stars, ♥ likes, and a small green "Active" badge.
+ */
+import Icon from './Icon.astro';
+import type { OssRepo } from '../data/profile';
+
+interface Props {
+  repo: OssRepo;
+}
+
+const { repo } = Astro.props;
+---
+
+<article class="ossCard">
+  <div class="ossCard__top">
+    <span class="ossCard__icon" aria-hidden="true"><Icon name="github" size={15} /></span>
+    <a class="ossCard__name" href={repo.href} target="_blank" rel="noopener noreferrer">{repo.name}</a>
+  </div>
+
+  <p class="ossCard__desc">{repo.description}</p>
+
+  <div class="ossCard__stats">
+    {
+      repo.stars !== undefined && (
+        <span class="ossCard__stat">
+          <Icon name="star" size={13} />
+          <span>{repo.stars}</span>
+          <span class="sr-only">stars</span>
+        </span>
+      )
+    }
+    {
+      repo.likes !== undefined && (
+        <span class="ossCard__stat">
+          <Icon name="heart" size={13} />
+          <span>{repo.likes}</span>
+          <span class="sr-only">likes</span>
+        </span>
+      )
+    }
+    <span class="ossCard__spacer">
+      <span class="badge badge--green">
+        <i class="dot" aria-hidden="true" />
+        {repo.status}
+      </span>
+    </span>
+  </div>
+</article>
+
+<style>
+  /* The class API ships `.dot`; the badge needs it inline and un-shrunk. */
+  .badge .dot {
+    width: 6px;
+    height: 6px;
+    box-shadow: none;
+  }
+  /* Descriptions run to different lengths, so pin the stat row to the card
+     bottom. Cards stretch to the tallest in their row, which keeps the stat
+     rows aligned even when a card omits its (unknown) metrics. */
+  .ossCard__desc {
+    flex: 1;
+  }
+  .ossCard__stats {
+    margin-top: var(--sp-5);
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

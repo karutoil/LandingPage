@@ -1,0 +1,45 @@
+---
+/**
+ * Stats row: four big numbers with hairline dividers, collapsing to 2x2 and
+ * then a single column on narrow screens.
+ */
+import { profile } from '../data/profile';
+
+const stats = profile.stats;
+---
+
+<section class="section section--tight" aria-label="Career metrics">
+  <div class="wrap">
+    <div class="statRow">
+      {
+        stats.map((stat) => (
+          <article class="stat">
+            <p class="stat__value">
+              {stat.value}
+              {stat.suffix && <sup>{stat.suffix}</sup>}
+            </p>
+            <p class="stat__label">{stat.label}</p>
+            <p class="stat__note">{stat.note}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  /* The token file ships the 4- and 2-column steps; add the 1-column floor and
+     keep the divider hairlines honest while the grid is folded. */
+  @media (max-width: 560px) {
+    .statRow {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .stat {
+      border-right: 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .stat:last-child {
+      border-bottom: 0;
+    }
+  }
+</style>
